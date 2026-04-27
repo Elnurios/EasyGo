@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyGo — Дизайн-направления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #080808;
+    color: #f4f4f5;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #0d0d0dcc;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1f1f1f;
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 0;
+  }
+  .nav-logo {
+    font-size: 15px; font-weight: 700;
+    color: #f4f4f5; padding: 16px 24px 16px 0;
+    border-right: 1px solid #1f1f1f;
+    margin-right: 24px;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: #7c3aed; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: #71717a;
+    border: none; background: transparent; transition: all 0.15s;
+  }
+  .nav-tab:hover { color: #a1a1aa; background: #141414; }
+  .nav-tab.active { color: #f4f4f5; background: #1c1c1c; }
+  .nav-badge {
+    margin-left: 6px; font-size: 11px; background: #7c3aed22;
+    color: #7c3aed; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 64px 24px 48px;
+    max-width: 640px; margin: 0 auto;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #7c3aed; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 36px; font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .hero p { font-size: 15px; color: #71717a; line-height: 1.6; }
+
+  /* DIRECTION SECTIONS */
+  .direction {
+    display: none;
+    padding: 0 24px 80px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .direction.active { display: block; }
+
+  .direction-header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 48px;
+  }
+  .direction-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #7c3aed; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .direction-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .direction-desc { font-size: 14px; color: #71717a; max-width: 480px; line-height: 1.6; }
+
+  /* SCREENS GRID */
+  .screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .screens { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .screens { grid-template-columns: 1fr; } }
+
+  .screen-wrap { display: flex; flex-direction: column; gap: 12px; }
+  .screen-label { font-size: 12px; color: #71717a; font-weight: 500; }
+
+  /* PHONE FRAME */
+  .phone {
+    background: #0d0d0d;
+    border: 1px solid #1f1f1f;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 9/19;
+    position: relative;
+  }
+  .phone-notch {
+    width: 80px; height: 6px; background: #1a1a1a;
+    border-radius: 3px; margin: 12px auto 0;
+  }
+
+  /* ==============================
+     DIRECTION 1: NODE — Сетевая метафора
+     ============================== */
+  .d1-screen {
+    height: 100%; padding: 0;
+    background: #0a0a0a;
+    font-family: 'Inter', sans-serif;
+    display: flex; flex-direction: column;
+  }
+  .d1-header {
+    padding: 14px 16px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .d1-node-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #7c3aed;
+    background: #7c3aed15; padding: 3px 8px; border-radius: 4px;
+    border: 1px solid #7c3aed33; letter-spacing: 0.05em;
+  }
+  .d1-status {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 9px; color: #22c55e;
+  }
+  .d1-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+    animation: pulse-green 2s infinite;
+  }
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .d1-profit-section {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 8px 16px;
+    position: relative;
+  }
+  .d1-period { font-size: 9px; color: #52525b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .d1-amount {
+    font-size: 38px; font-weight: 700; letter-spacing: -0.04em;
+    color: #f4f4f5; line-height: 1;
+    position: relative;
+  }
+  .d1-amount::after {
+    content: ''; position: absolute;
+    bottom: -8px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 1px; background: #7c3aed44;
+  }
+  .d1-currency { font-size: 18px; font-weight: 400; color: #a1a1aa; }
+  .d1-label { font-size: 9px; color: #52525b; margin-top: 16px; text-align: center; }
+  .d1-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    padding: 0 16px 12px;
+  }
+  .d1-card {
+    background: #141414; border: 1px solid #1f1f1f;
+    border-radius: 10px; padding: 10px;
+  }
+  .d1-card-label { font-size: 8px; color: #52525b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .d1-card-val { font-size: 14px; font-weight: 600; color: #e4e4e7; }
+  .d1-card-val.pos { color: #22c55e; }
+  .d1-ref-section {
+    padding: 10px 16px 16px;
+    border-top: 1px solid #141414;
+  }
+  .d1-ref-label { font-size: 8px; color: #52525b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .d1-ref-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #7c3aed;
+    background: #7c3aed10; padding: 7px 10px; border-radius: 8px;
+    border: 1px solid #7c3aed33;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 0 12px #7c3aed15;
+  }
+  .d1-copy { font-size: 8px; color: #7c3aed88; cursor: pointer; }
+  .d1-nav {
+    display: flex; border-top: 1px solid #141414;
+    padding: 8px 0 10px;
+  }
+  .d1-nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px; cursor: pointer;
+  }
+  .d1-nav-icon { font-size: 14px; }
+  .d1-nav-text { font-size: 7px; color: #52525b; }
+  .d1-nav-item.active .d1-nav-text { color: #7c3aed; }
+  .d1-nav-item.active .d1-nav-icon { filter: drop-shadow(0 0 4px #7c3aed); }
+
+  /* ==============================
+     DIRECTION 2: STARK — Минимализм данных
+     ============================== */
+  .d2-screen {
+    height: 100%; background: #111;
+    font-family: 'Inter', sans-serif;
+    display: flex; flex-direction: column;
+  }
+  .d2-top {
+    padding: 14px 16px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .d2-name { font-size: 11px; font-weight: 600; color: #a1a1aa; }
+  .d2-avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: white;
+  }
+  .d2-hero {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 0 16px;
+  }
+  .d2-today { font-size: 9px; color: #3f3f46; margin-bottom: 4px; }
+  .d2-big {
+    font-size: 44px; font-weight: 700; letter-spacing: -0.05em;
+    line-height: 1; color: #f4f4f5;
+  }
+  .d2-sub { font-size: 11px; color: #3f3f46; margin-top: 8px; }
+  .d2-sub span { color: #22c55e; }
+  .d2-divider { height: 1px; background: #1a1a1a; margin: 0 16px; }
+  .d2-rows { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .d2-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid #161616;
+  }
+  .d2-row:last-child { border-bottom: none; }
+  .d2-row-label { font-size: 10px; color: #52525b; }
+  .d2-row-val { font-size: 12px; font-weight: 600; color: #d4d4d8; }
+  .d2-cta {
+    margin: 0 16px 12px;
+    background: #7c3aed; color: white;
+    border: none; border-radius: 12px;
+    padding: 11px; font-size: 11px; font-weight: 600;
+    cursor: pointer; text-align: center;
+    letter-spacing: -0.01em;
+  }
+  .d2-ref {
+    margin: 0 16px 14px;
+    background: #141414; border-radius: 10px; padding: 10px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid #1a1a1a;
+  }
+  .d2-ref-left { display: flex; flex-direction: column; gap: 2px; }
+  .d2-ref-tiny { font-size: 8px; color: #52525b; }
+  .d2-ref-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: #7c3aed; font-weight: 500;
+  }
+  .d2-ref-arrow { font-size: 14px; color: #7c3aed; opacity: 0.6; }
+  .d2-nav {
+    display: flex; border-top: 1px solid #161616;
+    padding: 8px 0 10px;
+  }
+  .d2-nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 2px;
+  }
+  .d2-nav-dot {
+    width: 18px; height: 3px; border-radius: 2px;
+    background: #1f1f1f;
+  }
+  .d2-nav-item.active .d2-nav-dot { background: #7c3aed; }
+  .d2-nav-lbl { font-size: 7px; color: #3f3f46; }
+  .d2-nav-item.active .d2-nav-lbl { color: #7c3aed; }
+
+  /* ==============================
+     DIRECTION 3: PULSE — Киберпанк-акценты
+     ============================== */
+  .d3-screen {
+    height: 100%; background: #090909;
+    font-family: 'Inter', sans-serif;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .d3-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(#7c3aed08 1px, transparent 1px),
+      linear-gradient(90deg, #7c3aed08 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .d3-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
+  .d3-top {
+    padding: 14px 16px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .d3-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: #7c3aed; letter-spacing: 0.08em;
+  }
+  .d3-signal {
+    display: flex; align-items: center; gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; color: #22c55e;
+  }
+  .d3-blink {
+    width: 4px; height: 4px; border-radius: 50%; background: #22c55e;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .d3-profit {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+  }
+  .d3-ring {
+    width: 120px; height: 120px; border-radius: 50%;
+    border: 1px solid #7c3aed33;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: 0 0 30px #7c3aed18, inset 0 0 20px #7c3aed08;
+  }
+  .d3-ring::before {
+    content: ''; position: absolute; inset: -4px;
+    border-radius: 50%; border: 1px solid #7c3aed18;
+  }
+  .d3-ring-label { font-size: 7px; color: #7c3aed88; letter-spacing: 0.08em; text-transform: uppercase; }
+  .d3-ring-amount { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: #f4f4f5; }
+  .d3-ring-currency { font-size: 10px; color: #a1a1aa; }
+  .d3-ticker {
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; color: #3f3f46; letter-spacing: 0.04em;
+  }
+  .d3-ticker span { color: #22c55e; }
+  .d3-stats {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px; background: #141414; border-top: 1px solid #141414;
+  }
+  .d3-stat {
+    background: #0d0d0d; padding: 10px 8px; text-align: center;
+  }
+  .d3-stat-val { font-size: 13px; font-weight: 700; color: #e4e4e7; }
+  .d3-stat-label { font-size: 7px; color: #3f3f46; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .d3-ref-section { padding: 10px 12px; }
+  .d3-ref-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px; color: #7c3aed88;
+    letter-spacing: 0.1em; margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .d3-ref-box {
+    background: #7c3aed0d; border: 1px solid #7c3aed44;
+    border-radius: 8px; padding: 8px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 0 16px #7c3aed15;
+  }
+  .d3-ref-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: #7c3aed; font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .d3-ref-btn {
+    font-size: 8px; color: #7c3aed; background: #7c3aed22;
+    padding: 3px 8px; border-radius: 4px; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .d3-nav {
+    display: flex; gap: 0; border-top: 1px solid #141414;
+    padding: 8px 0 10px;
+  }
+  .d3-nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 2px; cursor: pointer;
+  }
+  .d3-nav-icon { font-size: 13px; opacity: 0.3; }
+  .d3-nav-item.active .d3-nav-icon { opacity: 1; filter: drop-shadow(0 0 5px #7c3aed); }
+  .d3-nav-line {
+    width: 16px; height: 2px; border-radius: 1px;
+    background: transparent;
+  }
+  .d3-nav-item.active .d3-nav-line { background: #7c3aed; box-shadow: 0 0 6px #7c3aed; }
+
+  /* FAVORITES SCREEN */
+  .fav-screen {
+    height: 100%; background: #0a0a0a;
+    display: flex; flex-direction: column;
+  }
+  .fav-top { padding: 14px 14px 10px; }
+  .fav-title { font-size: 13px; font-weight: 700; letter-spacing: -0.02em; color: #f4f4f5; }
+  .fav-sub { font-size: 9px; color: #52525b; margin-top: 2px; }
+  .fav-list { flex: 1; padding: 0 12px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+  .fav-item {
+    background: #141414; border: 1px solid #1f1f1f;
+    border-radius: 12px; padding: 10px 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .fav-item.online { border-color: #22c55e22; }
+  .fav-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #1f1f1f; display: flex; align-items: center;
+    justify-content: center; font-size: 12px; flex-shrink: 0;
+    position: relative;
+  }
+  .fav-ping {
+    position: absolute; bottom: 0; right: 0;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #22c55e; border: 1.5px solid #141414;
+    box-shadow: 0 0 6px #22c55e;
+  }
+  .fav-ping.off { background: #3f3f46; box-shadow: none; }
+  .fav-info { flex: 1; min-width: 0; }
+  .fav-name { font-size: 11px; font-weight: 600; color: #e4e4e7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fav-meta { font-size: 8px; color: #52525b; margin-top: 1px; }
+  .fav-meta.online { color: #22c55e; }
+  .fav-btn {
+    font-size: 9px; font-weight: 600; padding: 5px 9px;
+    border-radius: 7px; border: none; cursor: pointer;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .fav-btn.active { background: #7c3aed; color: white; }
+  .fav-btn.disabled { background: #1f1f1f; color: #3f3f46; }
+
+  /* COMPARISON TAGS */
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .tag {
+    font-size: 10px; padding: 4px 10px; border-radius: 20px;
+    border: 1px solid #1f1f1f; color: #71717a;
+  }
+  .tag.plus { border-color: #22c55e33; color: #22c55e; background: #22c55e08; }
+  .tag.minus { border-color: #f59e0b33; color: #f59e0b; background: #f59e0b08; }
+
+  /* COMPARISON TABLE */
+  .compare {
+    margin-top: 48px; background: #0d0d0d;
+    border: 1px solid #1a1a1a; border-radius: 16px;
+    overflow: hidden;
+  }
+  .compare-title {
+    padding: 20px 24px 16px;
+    font-size: 13px; font-weight: 600; color: #a1a1aa;
+    border-bottom: 1px solid #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+  .compare-row {
+    display: grid; grid-template-columns: 180px 1fr 1fr 1fr;
+    padding: 14px 24px; border-bottom: 1px solid #0f0f0f;
+    align-items: center; gap: 16px;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row.header {
+    font-size: 11px; color: #52525b; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding-bottom: 10px;
+  }
+  .compare-aspect { font-size: 12px; color: #71717a; }
+  .compare-cell { font-size: 12px; color: #a1a1aa; text-align: center; }
+  .compare-cell.best { color: #f4f4f5; font-weight: 600; }
+  .compare-dir { font-size: 12px; font-weight: 700; color: #f4f4f5; text-align: center; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; padding: 40px 24px;
+    border-top: 1px solid #0f0f0f;
+    font-size: 12px; color: #3f3f46;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .footer span { color: #7c3aed; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Easy<span>Go</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showDir(1, this)">
+      NODE <span class="nav-badge">1</span>
+    </button>
+    <button class="nav-tab" onclick="showDir(2, this)">
+      STARK <span class="nav-badge">2</span>
+    </button>
+    <button class="nav-tab" onclick="showDir(3, this)">
+      PULSE <span class="nav-badge">3</span>
+    </button>
+    <button class="nav-tab" onclick="showDir(4, this)">
+      СРАВНЕНИЕ
+    </button>
+    <button class="nav-tab" onclick="showDir(5, this)">
+      КАРТА <span class="nav-badge">2ГИС</span>
+    </button>
+  </div>
+</nav>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 24px">
+  <div class="hero">
+    <div class="hero-label">// ux-design-directions.v1</div>
+    <h1>Три направления<br>для EasyGo</h1>
+    <p>Каждое — полноценная визуальная система с дашбордом водителя, реферальным кодом и экраном Избранных. Одни и те же данные, разный характер.</p>
+  </div>
+</div>
+
+<!-- DIRECTION 1: NODE -->
+<div class="direction active" id="dir-1">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="direction-header">
+      <div class="direction-label">// направление 01</div>
+      <div class="direction-title">NODE — Узел сети</div>
+      <div class="direction-desc">Метафора децентрализованной сети. Водитель — узел. Реферальный код — access token. Кибер-акценты точечно: свечение, терминальный шрифт, сетчатый фон едва заметен. 90% чистота, 10% характер.</div>
+      <div class="tags" style="margin-top:12px">
+        <span class="tag plus">+ Чёткая метафора</span>
+        <span class="tag plus">+ Кибер-дух без перегруза</span>
+        <span class="tag plus">+ Данные читаются легко</span>
+        <span class="tag minus">~ Может показаться технически</span>
+      </div>
+    </div>
+
+    <div class="screens">
+      <!-- SCREEN 1: Dashboard -->
+      <div class="screen-wrap">
+        <div class="screen-label">Дашборд водителя</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="d1-screen">
+            <div class="d1-header">
+              <div class="d1-node-id">node://easygo/0x4f2a</div>
+              <div class="d1-status">
+                <div class="d1-dot"></div>
+                онлайн
+              </div>
+            </div>
+            <div class="d1-profit-section">
+              <div class="d1-period">сегодня</div>
+              <div class="d1-amount">3 840</div>
+              <div class="d1-label">чистая прибыль</div>
+            </div>
+            <div class="d1-grid">
+              <div class="d1-card">
+                <div class="d1-card-label">выручка</div>
+                <div class="d1-card-val">4 200 ₽</div>
+              </div>
+              <div class="d1-card">
+                <div class="d1-card-label">себестоимость</div>
+                <div class="d1-card-val">360 ₽</div>
+              </div>
+              <div class="d1-card">
+                <div class="d1-card-label">поездок</div>
+                <div class="d1-card-val">12</div>
+              </div>
+              <div class="d1-card">
+                <div class="d1-card-label">рефералы</div>
+                <div class="d1-card-val pos">+84 ₽</div>
+              </div>
+            </div>
+            <div class="d1-ref-section">
+              <div class="d1-ref-label">access token</div>
+              <div class="d1-ref-code">
+                EG-ARTEM-0x4F2A
+                <span class="d1-copy">copy</span>
+              </div>
+            </div>
+            <div class="d1-nav">
+              <div class="d1-nav-item active">
+                <div class="d1-nav-icon">◈</div>
+                <div class="d1-nav-text">главная</div>
+              </div>
+              <div class="d1-nav-item">
+                <div class="d1-nav-icon">◉</div>
+                <div class="d1-nav-text">финансы</div>
+              </div>
+              <div class="d1-nav-item">
+                <div class="d1-nav-icon">◎</div>
+                <div class="d1-nav-text">сеть</div>
+              </div>
+              <div class="d1-nav-item">
+                <div class="d1-nav-icon">○</div>
+                <div class="d1-nav-text">профиль</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: Favorites -->
+      <div class="screen-wrap">
+        <div class="screen-label">Избранные водители (пассажир)</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="fav-screen" style="background:#0a0a0a">
+            <div class="d1-header" style="margin-bottom:8px">
+              <div class="d1-node-id">мои водители</div>
+              <div style="font-size:9px;color:#52525b">3 контакта</div>
+            </div>
+            <div class="fav-list">
+              <div class="fav-item online">
+                <div class="fav-avatar">🧔<div class="fav-ping"></div></div>
+                <div class="fav-info">
+                  <div class="fav-name">Артём К.</div>
+                  <div class="fav-meta online">● онлайн · 2 мин</div>
+                </div>
+                <button class="fav-btn active">Запросить</button>
+              </div>
+              <div class="fav-item online">
+                <div class="fav-avatar">👨<div class="fav-ping"></div></div>
+                <div class="fav-info">
+                  <div class="fav-name">Михаил Д.</div>
+                  <div class="fav-meta online">● онлайн · 8 мин</div>
+                </div>
+                <button class="fav-btn active">Запросить</button>
+              </div>
+              <div class="fav-item">
+                <div class="fav-avatar">👴<div class="fav-ping off"></div></div>
+                <div class="fav-info">
+                  <div class="fav-name">Нурлан Б.</div>
+                  <div class="fav-meta">офлайн</div>
+                </div>
+                <button class="fav-btn disabled">Недоступен</button>
+              </div>
+            </div>
+            <div style="padding:10px 14px;border-top:1px solid #141414;">
+              <div style="background:#141414;border:1px solid #1f1f1f;border-radius:10px;padding:10px;font-size:9px;color:#52525b;text-align:center;">
+                + Добавить водителя после поездки
+              </div>
+            </div>
+            <div class="d1-nav">
+              <div class="d1-nav-item"><div class="d1-nav-icon" style="opacity:.3">🚗</div><div class="d1-nav-text">заказ</div></div>
+              <div class="d1-nav-item active"><div class="d1-nav-icon">◈</div><div class="d1-nav-text">мои</div></div>
+              <div class="d1-nav-item"><div class="d1-nav-icon" style="opacity:.3">◎</div><div class="d1-nav-text">история</div></div>
+              <div class="d1-nav-item"><div class="d1-nav-icon" style="opacity:.3">○</div><div class="d1-nav-text">профиль</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: Open Finance -->
+      <div class="screen-wrap">
+        <div class="screen-label">Публичный отчёт /open-finance</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div style="height:100%;background:#080808;padding:14px 14px 0;display:flex;flex-direction:column;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#7c3aed;margin-bottom:12px;letter-spacing:0.05em;">//open-finance.easygo</div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5;margin-bottom:4px;">Открытый отчёт</div>
+            <div style="font-size:9px;color:#52525b;margin-bottom:16px;">Обновлено только что</div>
+            <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+              <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:10px;padding:12px;">
+                <div style="font-size:8px;color:#52525b;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">выручка платформы</div>
+                <div style="font-size:20px;font-weight:700;color:#f4f4f5;letter-spacing:-.02em;">₽ 284,500</div>
+                <div style="font-size:8px;color:#22c55e;margin-top:2px;">▲ +12% vs прошлый месяц</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:10px;padding:10px;">
+                  <div style="font-size:8px;color:#52525b;margin-bottom:4px;">водители</div>
+                  <div style="font-size:16px;font-weight:700;color:#f4f4f5;">10</div>
+                </div>
+                <div style="background:#0d0d0d;border:1px solid #1a1a1a;border-radius:10px;padding:10px;">
+                  <div style="font-size:8px;color:#52525b;margin-bottom:4px;">рефералы</div>
+                  <div style="font-size:16px;font-weight:700;color:#f4f4f5;">₽5,690</div>
+                </div>
+              </div>
+              <div style="background:#0d0d0d;border:1px solid #7c3aed22;border-radius:10px;padding:10px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#7c3aed;margin-bottom:6px;">//transaction.log</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#3f3f46;line-height:1.6;">
+                  + ride#4821 · 850₽ · 14:32<br>
+                  + ride#4820 · 620₽ · 14:18<br>
+                  + ref#391 · 12₽ · 14:05<br>
+                  <span style="color:#7c3aed44;">...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECTION 2: STARK -->
+<div class="direction" id="dir-2">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="direction-header">
+      <div class="direction-label">// направление 02</div>
+      <div class="direction-title">STARK — Данные первым</div>
+      <div class="direction-desc">Абсолютный минимализм. Никаких декоративных элементов — только данные, типографика и пространство. Фиолетовый только там где нужно действие. Чистота Revolut, дух EasyGo.</div>
+      <div class="tags" style="margin-top:12px">
+        <span class="tag plus">+ Максимальная читаемость</span>
+        <span class="tag plus">+ Профессиональный вид</span>
+        <span class="tag plus">+ Быстрее воспринимается</span>
+        <span class="tag minus">~ Меньше характера</span>
+      </div>
+    </div>
+
+    <div class="screens">
+      <div class="screen-wrap">
+        <div class="screen-label">Дашборд водителя</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="d2-screen">
+            <div class="d2-top">
+              <div class="d2-name">Привет, Артём</div>
+              <div class="d2-avatar">А</div>
+            </div>
+            <div class="d2-hero">
+              <div class="d2-today">сегодня, чистая прибыль</div>
+              <div class="d2-big">3 840<span style="font-size:22px;color:#a1a1aa;"> ₽</span></div>
+              <div class="d2-sub">выручка 4 200 ₽ · <span>+24% вчера</span></div>
+            </div>
+            <div class="d2-divider"></div>
+            <div class="d2-rows">
+              <div class="d2-row">
+                <div class="d2-row-label">себестоимость</div>
+                <div class="d2-row-val">360 ₽</div>
+              </div>
+              <div class="d2-row">
+                <div class="d2-row-label">поездок сегодня</div>
+                <div class="d2-row-val">12</div>
+              </div>
+              <div class="d2-row">
+                <div class="d2-row-label">реферальный доход</div>
+                <div class="d2-row-val" style="color:#22c55e">+84 ₽</div>
+              </div>
+            </div>
+            <div class="d2-ref">
+              <div class="d2-ref-left">
+                <div class="d2-ref-tiny">мой реферальный код</div>
+                <div class="d2-ref-code">EG-ARTEM-7F2A</div>
+              </div>
+              <div class="d2-ref-arrow">→</div>
+            </div>
+            <div class="d2-cta">Поделиться кодом</div>
+            <div class="d2-nav">
+              <div class="d2-nav-item active">
+                <div class="d2-nav-dot"></div>
+                <div class="d2-nav-lbl">главная</div>
+              </div>
+              <div class="d2-nav-item">
+                <div class="d2-nav-dot"></div>
+                <div class="d2-nav-lbl">финансы</div>
+              </div>
+              <div class="d2-nav-item">
+                <div class="d2-nav-dot"></div>
+                <div class="d2-nav-lbl">рефералы</div>
+              </div>
+              <div class="d2-nav-item">
+                <div class="d2-nav-dot"></div>
+                <div class="d2-nav-lbl">профиль</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Избранные водители (пассажир)</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="fav-screen" style="background:#111;">
+            <div style="padding:14px 14px 10px;">
+              <div style="font-size:13px;font-weight:700;color:#f4f4f5;">Мои водители</div>
+              <div style="font-size:9px;color:#52525b;margin-top:2px;">2 из 3 сейчас онлайн</div>
+            </div>
+            <div class="fav-list">
+              <div class="fav-item online" style="background:#161616;">
+                <div class="fav-avatar" style="background:#1c1c1c;">🧔<div class="fav-ping"></div></div>
+                <div class="fav-info">
+                  <div class="fav-name">Артём К.</div>
+                  <div class="fav-meta online">онлайн · ≈2 мин</div>
+                </div>
+                <button class="fav-btn active">Запрос</button>
+              </div>
+              <div class="fav-item online" style="background:#161616;">
+                <div class="fav-avatar" style="background:#1c1c1c;">👨<div class="fav-ping"></div></div>
+                <div class="fav-info">
+                  <div class="fav-name">Михаил Д.</div>
+                  <div class="fav-meta online">онлайн · ≈8 мин</div>
+                </div>
+                <button class="fav-btn active">Запрос</button>
+              </div>
+              <div class="fav-item" style="background:#161616;">
+                <div class="fav-avatar" style="background:#1c1c1c;">👴<div class="fav-ping off"></div></div>
+                <div class="fav-info">
+                  <div class="fav-name">Нурлан Б.</div>
+                  <div class="fav-meta">офлайн</div>
+                </div>
+                <button class="fav-btn disabled">—</button>
+              </div>
+            </div>
+            <div style="padding:12px 14px;">
+              <div style="background:#7c3aed;border-radius:12px;padding:11px;text-align:center;font-size:11px;font-weight:600;color:white;">
+                Стандартный заказ
+              </div>
+            </div>
+            <div class="d2-nav" style="border-color:#191919;">
+              <div class="d2-nav-item"><div class="d2-nav-dot"></div><div class="d2-nav-lbl">заказ</div></div>
+              <div class="d2-nav-item active"><div class="d2-nav-dot"></div><div class="d2-nav-lbl">мои</div></div>
+              <div class="d2-nav-item"><div class="d2-nav-dot"></div><div class="d2-nav-lbl">история</div></div>
+              <div class="d2-nav-item"><div class="d2-nav-dot"></div><div class="d2-nav-lbl">профиль</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Запрос к Избранному</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div style="height:100%;background:#111;padding:14px;display:flex;flex-direction:column;gap:12px;">
+            <div style="font-size:13px;font-weight:700;color:#f4f4f5;">Запрос к Артёму</div>
+            <div style="background:#161616;border-radius:12px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div style="font-size:24px;">🧔</div>
+                <div>
+                  <div style="font-size:12px;font-weight:600;color:#f4f4f5;">Артём К.</div>
+                  <div style="font-size:9px;color:#22c55e;">онлайн</div>
+                </div>
+              </div>
+              <div style="height:1px;background:#1f1f1f;margin-bottom:10px;"></div>
+              <div style="font-size:10px;color:#52525b;margin-bottom:4px;">тариф поездки</div>
+              <div style="font-size:18px;font-weight:700;color:#f4f4f5;">≈ 680 <span style="font-size:12px;color:#a1a1aa;">₽</span></div>
+              <div style="font-size:9px;color:#f59e0b;margin-top:4px;">+25% тариф Избранного</div>
+            </div>
+            <div style="background:#f59e0b0d;border:1px solid #f59e0b33;border-radius:10px;padding:10px;font-size:9px;color:#a1a1aa;line-height:1.5;">
+              ⚠ Артём может быть далеко от вас. Время подачи может быть увеличено.
+            </div>
+            <div style="flex:1;"></div>
+            <div style="background:#7c3aed;border-radius:12px;padding:12px;text-align:center;font-size:12px;font-weight:600;color:white;">
+              Отправить запрос Артёму
+            </div>
+            <div style="background:#161616;border-radius:12px;padding:12px;text-align:center;font-size:12px;color:#71717a;">
+              Стандартный заказ
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECTION 3: PULSE -->
+<div class="direction" id="dir-3">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="direction-header">
+      <div class="direction-label">// направление 03</div>
+      <div class="direction-title">PULSE — Кибер-пульс</div>
+      <div class="direction-desc">Наиболее выраженная кибер-эстетика. Сетчатый фон, кольцо-индикатор прибыли, терминальный лог. Остаётся в рамках 10% правила, но в ключевых точках эффект максимальный.</div>
+      <div class="tags" style="margin-top:12px">
+        <span class="tag plus">+ Самый уникальный вид</span>
+        <span class="tag plus">+ Передаёт ДНК EasyGo</span>
+        <span class="tag minus">~ Сложнее в разработке</span>
+        <span class="tag minus">~ Требует привыкания</span>
+      </div>
+    </div>
+
+    <div class="screens">
+      <div class="screen-wrap">
+        <div class="screen-label">Дашборд водителя</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="d3-screen">
+            <div class="d3-grid-bg"></div>
+            <div class="d3-content">
+              <div class="d3-top">
+                <div class="d3-brand">EASYGO</div>
+                <div class="d3-signal"><div class="d3-blink"></div>LIVE</div>
+              </div>
+              <div class="d3-profit">
+                <div class="d3-ring">
+                  <div class="d3-ring-label">прибыль</div>
+                  <div class="d3-ring-amount">3 840</div>
+                  <div class="d3-ring-currency">₽ / сегодня</div>
+                </div>
+                <div class="d3-ticker">выручка <span>4 200 ₽</span> · -360 ₽</div>
+              </div>
+              <div class="d3-stats">
+                <div class="d3-stat">
+                  <div class="d3-stat-val">12</div>
+                  <div class="d3-stat-label">поездок</div>
+                </div>
+                <div class="d3-stat">
+                  <div class="d3-stat-val" style="color:#22c55e">+84₽</div>
+                  <div class="d3-stat-label">рефералы</div>
+                </div>
+                <div class="d3-stat">
+                  <div class="d3-stat-val">4.9</div>
+                  <div class="d3-stat-label">рейтинг</div>
+                </div>
+              </div>
+              <div class="d3-ref-section">
+                <div class="d3-ref-header">// access_token</div>
+                <div class="d3-ref-box">
+                  <div class="d3-ref-val">EG·ARTEM·0x4F2A</div>
+                  <div class="d3-ref-btn">copy</div>
+                </div>
+              </div>
+              <div class="d3-nav">
+                <div class="d3-nav-item active">
+                  <div class="d3-nav-icon">◈</div>
+                  <div class="d3-nav-line"></div>
+                </div>
+                <div class="d3-nav-item">
+                  <div class="d3-nav-icon">◉</div>
+                  <div class="d3-nav-line"></div>
+                </div>
+                <div class="d3-nav-item">
+                  <div class="d3-nav-icon">◎</div>
+                  <div class="d3-nav-line"></div>
+                </div>
+                <div class="d3-nav-item">
+                  <div class="d3-nav-icon">○</div>
+                  <div class="d3-nav-line"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Избранные водители (пассажир)</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="d3-screen">
+            <div class="d3-grid-bg"></div>
+            <div class="d3-content">
+              <div class="d3-top">
+                <div class="d3-brand">МОИ ВОДИТЕЛИ</div>
+                <div class="d3-signal"><div class="d3-blink"></div>2 online</div>
+              </div>
+              <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:6px;overflow:hidden;">
+                <div style="background:#0d0d0d;border:1px solid #22c55e22;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;">
+                  <div style="font-size:20px;position:relative;">🧔
+                    <div style="position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;border:1.5px solid #0d0d0d;"></div>
+                  </div>
+                  <div style="flex:1;">
+                    <div style="font-size:10px;font-weight:600;color:#f4f4f5;">Артём К.</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#22c55e;">ping: 2min</div>
+                  </div>
+                  <div style="background:#7c3aed;color:white;font-size:8px;font-weight:600;padding:5px 9px;border-radius:6px;box-shadow:0 0 10px #7c3aed44;">TX</div>
+                </div>
+                <div style="background:#0d0d0d;border:1px solid #22c55e22;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;">
+                  <div style="font-size:20px;position:relative;">👨
+                    <div style="position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;border:1.5px solid #0d0d0d;"></div>
+                  </div>
+                  <div style="flex:1;">
+                    <div style="font-size:10px;font-weight:600;color:#f4f4f5;">Михаил Д.</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#22c55e;">ping: 8min</div>
+                  </div>
+                  <div style="background:#7c3aed;color:white;font-size:8px;font-weight:600;padding:5px 9px;border-radius:6px;box-shadow:0 0 10px #7c3aed44;">TX</div>
+                </div>
+                <div style="background:#0d0d0d;border:1px solid #1f1f1f;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;opacity:.5;">
+                  <div style="font-size:20px;">👴</div>
+                  <div style="flex:1;">
+                    <div style="font-size:10px;font-weight:600;color:#a1a1aa;">Нурлан Б.</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:#52525b;">offline</div>
+                  </div>
+                  <div style="background:#1f1f1f;color:#52525b;font-size:8px;padding:5px 9px;border-radius:6px;">—</div>
+                </div>
+              </div>
+              <div style="padding:10px 12px 14px;">
+                <div style="border:1px solid #1f1f1f;border-radius:10px;padding:10px;text-align:center;font-size:10px;color:#52525b;">
+                  стандартный заказ
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-label">Регистрация — финал</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="d3-screen">
+            <div class="d3-grid-bg"></div>
+            <div class="d3-content" style="align-items:center;justify-content:center;padding:20px;">
+              <div style="text-align:center;">
+                <div style="width:80px;height:80px;border-radius:50%;border:2px solid #7c3aed;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px #7c3aed33,inset 0 0 20px #7c3aed08;font-size:32px;">
+                  ◈
+                </div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#7c3aed;letter-spacing:.1em;margin-bottom:8px;">// initializing node</div>
+                <div style="font-size:18px;font-weight:700;color:#f4f4f5;letter-spacing:-.02em;margin-bottom:6px;">Узел активирован</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#52525b;margin-bottom:24px;">node://easygo/0x4F2A</div>
+                <div style="font-size:11px;color:#71717a;line-height:1.5;margin-bottom:24px;">
+                  Добро пожаловать в сеть.<br>0% комиссии. Твои данные. Твои деньги.
+                </div>
+                <div style="background:#7c3aed;color:white;border-radius:12px;padding:12px 24px;font-size:12px;font-weight:600;box-shadow:0 0 20px #7c3aed44;">
+                  Открыть кабинет →
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<div class="direction" id="dir-4">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="direction-header">
+      <div class="direction-label">// сравнение</div>
+      <div class="direction-title">Что выбрать?</div>
+      <div class="direction-desc">Каждое направление отвечает разным приоритетам. Можно взять одно целиком или скомбинировать элементы.</div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-title">// direction.compare</div>
+      <div class="compare-row header">
+        <div></div>
+        <div class="compare-dir">NODE</div>
+        <div class="compare-dir">STARK</div>
+        <div class="compare-dir">PULSE</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-aspect">Кибер-эстетика</div>
+        <div class="compare-cell best">Умеренная ★★★</div>
+        <div class="compare-cell">Минимальная ★★</div>
+        <div class="compare-cell">Максимальная ★★★★★</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-aspect">Читаемость данных</div>
+        <div class="compare-cell best">Высокая</div>
+        <div class="compare-cell best">Очень высокая</div>
+        <div class="compare-cell">Средняя</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-aspect">Скорость разработки</div>
+        <div class="compare-cell best">Быстро</div>
+        <div class="compare-cell best">Быстро</div>
+        <div class="compare-cell">Медленнее</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-aspect">Уникальность</div>
+        <div class="compare-cell">Средняя</div>
+        <div class="compare-cell">Низкая</div>
+        <div class="compare-cell best">Высокая</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-aspect">Доверие новых водителей</div>
+        <div class="compare-cell best">Высокое</div>
+        <div class="compare-cell best">Высокое</div>
+        <div class="compare-cell">Среднее</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-aspect">Передаёт ДНК EasyGo</div>
+        <div class="compare-cell best">Да ✓</div>
+        <div class="compare-cell">Частично</div>
+        <div class="compare-cell best">Да ✓</div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;background:#0d0d0d;border:1px solid #7c3aed33;border-radius:16px;padding:24px;box-shadow:0 0 30px #7c3aed0a;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#7c3aed;margin-bottom:12px;letter-spacing:.06em;">// sally.recommendation</div>
+      <div style="font-size:14px;font-weight:600;color:#f4f4f5;margin-bottom:8px;">Рекомендация: NODE как база + элементы PULSE</div>
+      <div style="font-size:13px;color:#71717a;line-height:1.7;">
+        NODE даёт чёткость и читаемость — критично для водителя который смотрит на числа в машине. PULSE-элементы добавить точечно: кольцо-индикатор на главном экране, анимация boot-sequence при регистрации, более выраженный glow на реферальном коде. Так соблюдается 10% правило и сохраняется ДНК платформы.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECTION 5: MAP -->
+<div class="direction" id="dir-5">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="direction-header">
+      <div class="direction-label">// карта маршрута</div>
+      <div class="direction-title">Карта 2ГИС — тёмный стиль EasyGo</div>
+      <div class="direction-desc">Карта маршрута интегрирована в приложение водителя и пассажира. Стиль карты адаптирован под тёмную тему EasyGo: тёмные улицы, фиолетовый маршрут, минимум визуального шума. Точка A — подача, точка Б — назначение.</div>
+      <div class="tags" style="margin-top:12px">
+        <span class="tag plus">+ 2ГИС тёмный стиль</span>
+        <span class="tag plus">+ Маршрут A→Б</span>
+        <span class="tag plus">+ Позиция водителя live</span>
+        <span class="tag plus">+ ETA и дистанция</span>
+      </div>
+    </div>
+
+    <div class="screens">
+
+      <!-- SCREEN 1: Пассажир ищет водителя -->
+      <div class="screen-wrap">
+        <div class="screen-label">Пассажир — ожидание водителя</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div style="height:100%;background:#0a0a0a;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+
+            <!-- MAP SVG — пассажир -->
+            <svg viewBox="0 0 220 320" style="flex:1;width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <!-- Фон карты -->
+              <rect width="220" height="320" fill="#0e0e12"/>
+
+              <!-- Кварталы / здания -->
+              <rect x="0" y="0" width="55" height="40" fill="#141418" rx="0"/>
+              <rect x="60" y="0" width="70" height="40" fill="#141418" rx="0"/>
+              <rect x="135" y="0" width="85" height="40" fill="#141418" rx="0"/>
+              <rect x="0" y="45" width="40" height="55" fill="#141418" rx="0"/>
+              <rect x="45" y="45" width="55" height="55" fill="#141418" rx="0"/>
+              <rect x="105" y="45" width="50" height="55" fill="#141418" rx="0"/>
+              <rect x="160" y="45" width="60" height="55" fill="#141418" rx="0"/>
+              <rect x="0" y="110" width="65" height="45" fill="#141418" rx="0"/>
+              <rect x="70" y="110" width="45" height="45" fill="#141418" rx="0"/>
+              <rect x="120" y="110" width="100" height="45" fill="#141418" rx="0"/>
+              <rect x="0" y="170" width="50" height="60" fill="#141418" rx="0"/>
+              <rect x="55" y="170" width="60" height="60" fill="#141418" rx="0"/>
+              <rect x="120" y="170" width="45" height="60" fill="#141418" rx="0"/>
+              <rect x="170" y="170" width="50" height="60" fill="#141418" rx="0"/>
+              <rect x="0" y="245" width="80" height="75" fill="#141418" rx="0"/>
+              <rect x="85" y="245" width="55" height="75" fill="#141418" rx="0"/>
+              <rect x="145" y="245" width="75" height="75" fill="#141418" rx="0"/>
+
+              <!-- Улицы (светлее) -->
+              <!-- Горизонтальные -->
+              <rect x="0" y="40" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="100" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="160" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="235" width="220" height="5" fill="#1a1a22"/>
+              <!-- Вертикальные -->
+              <rect x="55" y="0" width="5" height="320" fill="#1a1a22"/>
+              <rect x="115" y="0" width="5" height="320" fill="#1a1a22"/>
+              <rect x="160" y="0" width="5" height="320" fill="#1a1a22"/>
+
+              <!-- Главные улицы (ярче) -->
+              <rect x="0" y="155" width="220" height="10" fill="#1f1f2e"/>
+              <rect x="108" y="0" width="12" height="320" fill="#1f1f2e"/>
+
+              <!-- Зелёные зоны -->
+              <rect x="62" y="47" width="40" height="50" fill="#0d1a0d" rx="4"/>
+              <rect x="0" y="172" width="48" height="58" fill="#0d1a0d" rx="4"/>
+
+              <!-- МАРШРУТ — фиолетовая линия A→Б -->
+              <!-- Тень маршрута -->
+              <polyline points="55,270 55,160 114,160 114,80 160,80 160,50"
+                stroke="#7c3aed" stroke-width="5" fill="none" stroke-opacity="0.25"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Основная линия -->
+              <polyline points="55,270 55,160 114,160 114,80 160,80 160,50"
+                stroke="#7c3aed" stroke-width="3" fill="none" stroke-opacity="1"
+                stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="none"/>
+
+              <!-- Пунктирная анимация маршрута -->
+              <polyline points="55,270 55,160 114,160 114,80 160,80 160,50"
+                stroke="#a78bfa" stroke-width="1.5" fill="none" stroke-opacity="0.6"
+                stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="4 8">
+                <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1.5s" repeatCount="indefinite"/>
+              </polyline>
+
+              <!-- ТОЧКА A — подача (зелёная) -->
+              <circle cx="55" cy="270" r="10" fill="#0d0d0d" stroke="#22c55e" stroke-width="2"/>
+              <circle cx="55" cy="270" r="5" fill="#22c55e"/>
+              <circle cx="55" cy="270" r="16" fill="#22c55e" fill-opacity="0.12">
+                <animate attributeName="r" values="10;20;10" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="fill-opacity" values="0.15;0;0.15" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <text x="55" y="292" text-anchor="middle" fill="#22c55e" font-size="7" font-family="JetBrains Mono, monospace" font-weight="500">A</text>
+
+              <!-- ТОЧКА Б — назначение (фиолетовая) -->
+              <rect x="149" y="34" width="22" height="28" rx="3" fill="#7c3aed"/>
+              <polygon points="155,62 160,70 165,62" fill="#7c3aed"/>
+              <text x="160" y="52" text-anchor="middle" fill="white" font-size="9" font-family="Inter, sans-serif" font-weight="700">Б</text>
+              <!-- Glow -->
+              <circle cx="160" cy="50" r="18" fill="#7c3aed" fill-opacity="0.08"/>
+
+              <!-- МАШИНА ВОДИТЕЛЯ (на маршруте) -->
+              <circle cx="114" cy="160" r="10" fill="#0d0d0d" stroke="#7c3aed" stroke-width="1.5"/>
+              <text x="114" y="164" text-anchor="middle" fill="#7c3aed" font-size="10">🚗</text>
+              <!-- Пульс вокруг машины -->
+              <circle cx="114" cy="160" r="15" fill="none" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.4">
+                <animate attributeName="r" values="10;22;10" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="stroke-opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
+              </circle>
+
+              <!-- Подпись улиц -->
+              <text x="85" y="156" text-anchor="middle" fill="#2a2a3a" font-size="6" font-family="Inter, sans-serif">ул. Абая</text>
+              <text x="35" y="112" fill="#2a2a3a" font-size="6" font-family="Inter, sans-serif" transform="rotate(-90,35,112)">пр. Достык</text>
+
+              <!-- Компас -->
+              <text x="200" y="20" text-anchor="middle" fill="#3a3a4a" font-size="8" font-family="Inter, sans-serif" font-weight="700">N</text>
+              <line x1="200" y1="22" x2="200" y2="30" stroke="#3a3a4a" stroke-width="1"/>
+            </svg>
+
+            <!-- НИЖНЯЯ ПАНЕЛЬ — информация о поездке -->
+            <div style="background:#0d0d0d;border-top:1px solid #1f1f1f;padding:12px 14px 14px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#1c1c1c;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🧔</div>
+                <div style="flex:1;">
+                  <div style="font-size:11px;font-weight:700;color:#f4f4f5;">Артём К.</div>
+                  <div style="font-size:9px;color:#22c55e;margin-top:1px;">● Едет к вам · 4 мин</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:13px;font-weight:700;color:#f4f4f5;">680 ₽</div>
+                  <div style="font-size:8px;color:#71717a;">+25% тариф</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                <div style="background:#141414;border-radius:8px;padding:8px;text-align:center;">
+                  <div style="font-size:11px;font-weight:700;color:#f4f4f5;">4 мин</div>
+                  <div style="font-size:8px;color:#52525b;">подача</div>
+                </div>
+                <div style="background:#141414;border-radius:8px;padding:8px;text-align:center;">
+                  <div style="font-size:11px;font-weight:700;color:#f4f4f5;">3.2 км</div>
+                  <div style="font-size:8px;color:#52525b;">маршрут</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: Водитель — навигация к пассажиру -->
+      <div class="screen-wrap">
+        <div class="screen-label">Водитель — навигация к пассажиру</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div style="height:100%;background:#0a0a0a;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+
+            <!-- NODE-style header overlay на карте -->
+            <div style="position:absolute;top:14px;left:0;right:0;z-index:10;padding:0 12px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="background:#0d0d0dcc;backdrop-filter:blur(8px);border:1px solid #1f1f1f;border-radius:10px;padding:6px 10px;display:flex;align-items:center;gap:6px;">
+                <div style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;"></div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#7c3aed;">node://active</div>
+              </div>
+              <div style="background:#0d0d0dcc;backdrop-filter:blur(8px);border:1px solid #1f1f1f;border-radius:10px;padding:6px 10px;">
+                <div style="font-size:9px;color:#f4f4f5;font-weight:600;">4 мин · 1.8 км</div>
+              </div>
+            </div>
+
+            <!-- MAP SVG — водитель -->
+            <svg viewBox="0 0 220 340" style="flex:1;width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <rect width="220" height="340" fill="#0e0e12"/>
+
+              <!-- Кварталы -->
+              <rect x="0" y="0" width="50" height="50" fill="#141418"/>
+              <rect x="55" y="0" width="65" height="50" fill="#141418"/>
+              <rect x="125" y="0" width="95" height="50" fill="#141418"/>
+              <rect x="0" y="55" width="45" height="60" fill="#141418"/>
+              <rect x="50" y="55" width="60" height="60" fill="#141418"/>
+              <rect x="115" y="55" width="45" height="60" fill="#141418"/>
+              <rect x="165" y="55" width="55" height="60" fill="#141418"/>
+              <rect x="0" y="120" width="70" height="50" fill="#141418"/>
+              <rect x="75" y="120" width="50" height="50" fill="#141418"/>
+              <rect x="130" y="120" width="90" height="50" fill="#141418"/>
+              <rect x="0" y="180" width="55" height="70" fill="#141418"/>
+              <rect x="60" y="180" width="65" height="70" fill="#141418"/>
+              <rect x="130" y="180" width="40" height="70" fill="#141418"/>
+              <rect x="175" y="180" width="45" height="70" fill="#141418"/>
+              <rect x="0" y="260" width="90" height="80" fill="#141418"/>
+              <rect x="95" y="260" width="60" height="80" fill="#141418"/>
+              <rect x="160" y="260" width="60" height="80" fill="#141418"/>
+
+              <!-- Улицы -->
+              <rect x="0" y="50" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="115" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="175" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="255" width="220" height="5" fill="#1a1a22"/>
+              <rect x="50" y="0" width="5" height="340" fill="#1a1a22"/>
+              <rect x="110" y="0" width="5" height="340" fill="#1a1a22"/>
+              <rect x="160" y="0" width="5" height="340" fill="#1a1a22"/>
+
+              <!-- Главные -->
+              <rect x="0" y="112" width="220" height="11" fill="#1f1f2e"/>
+              <rect x="107" y="0" width="11" height="340" fill="#1f1f2e"/>
+
+              <!-- Зелёные зоны -->
+              <rect x="52" y="57" width="55" height="55" fill="#0d1a0d" rx="3"/>
+
+              <!-- МАРШРУТ к пассажиру (зелёный — подача) -->
+              <polyline points="112,200 112,117 52,117 52,280"
+                stroke="#22c55e" stroke-width="4" fill="none" stroke-opacity="0.2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="112,200 112,117 52,117 52,280"
+                stroke="#22c55e" stroke-width="2.5" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="6 5">
+                <animate attributeName="stroke-dashoffset" from="0" to="-22" dur="1s" repeatCount="indefinite"/>
+              </polyline>
+
+              <!-- МАШИНА ВОДИТЕЛЯ (текущая позиция, крупнее) -->
+              <circle cx="112" cy="200" r="14" fill="#0d0d0d" stroke="#7c3aed" stroke-width="2"/>
+              <circle cx="112" cy="200" r="20" fill="#7c3aed" fill-opacity="0.1"/>
+              <text x="112" y="205" text-anchor="middle" fill="#7c3aed" font-size="13">🚗</text>
+              <!-- Направление движения -->
+              <polygon points="112,182 108,192 116,192" fill="#7c3aed" fill-opacity="0.7"/>
+
+              <!-- ТОЧКА ПАССАЖИРА (зелёная, внизу) -->
+              <circle cx="52" cy="280" r="10" fill="#0d0d0d" stroke="#22c55e" stroke-width="2"/>
+              <circle cx="52" cy="280" r="5" fill="#22c55e"/>
+              <circle cx="52" cy="280" r="16" fill="#22c55e" fill-opacity="0.1">
+                <animate attributeName="r" values="10;20;10" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="fill-opacity" values="0.15;0;0.15" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <text x="52" y="300" text-anchor="middle" fill="#22c55e" font-size="7" font-family="JetBrains Mono, monospace">пассажир</text>
+
+              <!-- Подписи улиц -->
+              <text x="85" y="113" text-anchor="middle" fill="#2a2a3a" font-size="6" font-family="Inter, sans-serif">ул. Абая</text>
+
+              <!-- Компас -->
+              <text x="200" y="20" text-anchor="middle" fill="#3a3a4a" font-size="8" font-family="Inter">N</text>
+              <line x1="200" y1="22" x2="200" y2="30" stroke="#3a3a4a" stroke-width="1"/>
+            </svg>
+
+            <!-- НИЖНЯЯ ПАНЕЛЬ — водитель -->
+            <div style="background:#0d0d0d;border-top:1px solid #1f1f1f;padding:10px 12px 12px;">
+              <div style="font-size:9px;color:#52525b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">следующее действие</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <div style="width:28px;height:28px;background:#7c3aed;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">↑</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:#f4f4f5;">Поверните налево</div>
+                  <div style="font-size:9px;color:#71717a;">на ул. Абая через 200 м</div>
+                </div>
+                <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:#7c3aed;">1.8 км</div>
+              </div>
+              <div style="background:#141414;border-radius:8px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                  <div style="font-size:9px;color:#52525b;">пассажир</div>
+                  <div style="font-size:11px;font-weight:600;color:#f4f4f5;">Диана М.</div>
+                </div>
+                <div style="font-size:9px;color:#22c55e;">● ждёт</div>
+                <div style="background:#1f1f1f;border-radius:6px;padding:5px 8px;font-size:9px;color:#a1a1aa;">позвонить</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: Маршрут поездки A→Б -->
+      <div class="screen-wrap">
+        <div class="screen-label">Полный маршрут — точка A до точки Б</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div style="height:100%;background:#0a0a0a;display:flex;flex-direction:column;overflow:hidden;">
+
+            <!-- Верхний бар -->
+            <div style="padding:12px 12px 8px;background:#0d0d0d;border-bottom:1px solid #141414;flex-shrink:0;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="flex:1;">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                    <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+                    <div style="font-size:10px;color:#f4f4f5;font-weight:500;">пр. Достык 87</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:8px;height:8px;border-radius:3px;background:#7c3aed;flex-shrink:0;"></div>
+                    <div style="font-size:10px;color:#f4f4f5;font-weight:500;">ул. Сейфуллина 480</div>
+                  </div>
+                </div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#7c3aed;background:#7c3aed12;padding:4px 8px;border-radius:6px;border:1px solid #7c3aed33;">3.2 км</div>
+              </div>
+            </div>
+
+            <!-- MAP SVG — полный маршрут -->
+            <svg viewBox="0 0 220 310" style="flex:1;width:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <rect width="220" height="310" fill="#0e0e12"/>
+
+              <!-- Кварталы - упрощённо -->
+              <rect x="0" y="0" width="48" height="45" fill="#141418"/>
+              <rect x="53" y="0" width="62" height="45" fill="#141418"/>
+              <rect x="120" y="0" width="100" height="45" fill="#141418"/>
+              <rect x="0" y="50" width="43" height="55" fill="#141418"/>
+              <rect x="48" y="50" width="57" height="55" fill="#141418"/>
+              <rect x="110" y="50" width="48" height="55" fill="#141418"/>
+              <rect x="163" y="50" width="57" height="55" fill="#141418"/>
+              <rect x="0" y="110" width="65" height="50" fill="#141418"/>
+              <rect x="70" y="110" width="45" height="50" fill="#141418"/>
+              <rect x="120" y="110" width="100" height="50" fill="#141418"/>
+              <rect x="0" y="165" width="50" height="60" fill="#141418"/>
+              <rect x="55" y="165" width="60" height="60" fill="#141418"/>
+              <rect x="120" y="165" width="100" height="60" fill="#141418"/>
+              <rect x="0" y="230" width="85" height="80" fill="#141418"/>
+              <rect x="90" y="230" width="55" height="80" fill="#141418"/>
+              <rect x="150" y="230" width="70" height="80" fill="#141418"/>
+
+              <!-- Улицы -->
+              <rect x="0" y="45" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="105" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="160" width="220" height="5" fill="#1a1a22"/>
+              <rect x="0" y="225" width="220" height="5" fill="#1a1a22"/>
+              <rect x="48" y="0" width="5" height="310" fill="#1a1a22"/>
+              <rect x="110" y="0" width="5" height="310" fill="#1a1a22"/>
+              <rect x="160" y="0" width="5" height="310" fill="#1a1a22"/>
+
+              <!-- Главные -->
+              <rect x="0" y="102" width="220" height="11" fill="#1f1f2e"/>
+              <rect x="107" y="0" width="11" height="310" fill="#1f1f2e"/>
+
+              <!-- Парк -->
+              <rect x="50" y="52" width="55" height="50" fill="#0d1a0d" rx="3"/>
+
+              <!-- ПОЛНЫЙ МАРШРУТ A→Б (фиолетовый сплошной) -->
+              <!-- Тень -->
+              <polyline points="48,270 48,107 112,107 112,50 160,50 160,25"
+                stroke="#7c3aed" stroke-width="6" fill="none" stroke-opacity="0.2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Основной -->
+              <polyline points="48,270 48,107 112,107 112,50 160,50 160,25"
+                stroke="#7c3aed" stroke-width="3.5" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Анимация движения -->
+              <polyline points="48,270 48,107 112,107 112,50 160,50 160,25"
+                stroke="#c4b5fd" stroke-width="1.5" fill="none" stroke-opacity="0.5"
+                stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="5 9">
+                <animate attributeName="stroke-dashoffset" from="0" to="-28" dur="2s" repeatCount="indefinite"/>
+              </polyline>
+
+              <!-- ТОЧКА A — подача -->
+              <circle cx="48" cy="270" r="11" fill="#0d0d0d" stroke="#22c55e" stroke-width="2.5"/>
+              <circle cx="48" cy="270" r="5" fill="#22c55e"/>
+              <circle cx="48" cy="270" r="18" fill="#22c55e" fill-opacity="0.08">
+                <animate attributeName="r" values="11;22;11" dur="2.5s" repeatCount="indefinite"/>
+                <animate attributeName="fill-opacity" values="0.1;0;0.1" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+              <!-- Метка A -->
+              <rect x="56" y="261" width="18" height="12" rx="3" fill="#22c55e"/>
+              <text x="65" y="271" text-anchor="middle" fill="white" font-size="8" font-family="Inter, sans-serif" font-weight="700">A</text>
+
+              <!-- ТОЧКА Б — назначение -->
+              <rect x="149" y="8" width="22" height="26" rx="3" fill="#7c3aed"/>
+              <polygon points="155,34 160,42 165,34" fill="#7c3aed"/>
+              <text x="160" y="26" text-anchor="middle" fill="white" font-size="9" font-family="Inter, sans-serif" font-weight="700">Б</text>
+              <circle cx="160" cy="25" r="20" fill="#7c3aed" fill-opacity="0.06"/>
+
+              <!-- МАШИНА (на маршруте, в середине) -->
+              <circle cx="112" cy="107" r="11" fill="#0a0a0a" stroke="#7c3aed" stroke-width="2"/>
+              <text x="112" y="112" text-anchor="middle" fill="#7c3aed" font-size="11">🚗</text>
+
+              <!-- Метки улиц -->
+              <text x="80" y="103" text-anchor="middle" fill="#2a2a3a" font-size="6" font-family="Inter">ул. Абая</text>
+
+              <!-- Масштаб -->
+              <line x1="160" y1="295" x2="200" y2="295" stroke="#2a2a3a" stroke-width="1"/>
+              <line x1="160" y1="292" x2="160" y2="298" stroke="#2a2a3a" stroke-width="1"/>
+              <line x1="200" y1="292" x2="200" y2="298" stroke="#2a2a3a" stroke-width="1"/>
+              <text x="180" y="305" text-anchor="middle" fill="#2a2a3a" font-size="6" font-family="Inter">500 м</text>
+
+              <!-- Компас -->
+              <text x="200" y="18" text-anchor="middle" fill="#3a3a4a" font-size="8" font-family="Inter" font-weight="700">N</text>
+            </svg>
+
+            <!-- НИЖНЯЯ ПАНЕЛЬ — итог маршрута -->
+            <div style="background:#0d0d0d;border-top:1px solid #1f1f1f;padding:10px 12px 14px;flex-shrink:0;">
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+                <div style="background:#141414;border-radius:8px;padding:8px;text-align:center;">
+                  <div style="font-size:12px;font-weight:700;color:#f4f4f5;">3.2 км</div>
+                  <div style="font-size:7px;color:#52525b;">маршрут</div>
+                </div>
+                <div style="background:#141414;border-radius:8px;padding:8px;text-align:center;">
+                  <div style="font-size:12px;font-weight:700;color:#f4f4f5;">14 мин</div>
+                  <div style="font-size:7px;color:#52525b;">время</div>
+                </div>
+                <div style="background:#141414;border-radius:8px;padding:8px;text-align:center;">
+                  <div style="font-size:12px;font-weight:700;color:#7c3aed;">680 ₽</div>
+                  <div style="font-size:7px;color:#52525b;">цена</div>
+                </div>
+              </div>
+              <div style="background:#7c3aed;border-radius:10px;padding:10px;text-align:center;font-size:11px;font-weight:700;color:white;">
+                Подтвердить поездку
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ЛЕГЕНДА -->
+    <div style="margin-top:32px;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:16px;padding:24px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#7c3aed;margin-bottom:16px;letter-spacing:.06em;">// map.design.legend</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:#f4f4f5;margin-bottom:8px;">Цвета карты</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#0e0e12;border:1px solid #1a1a22;border-radius:2px;flex-shrink:0;display:inline-block;"></span>Фон карты</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#1f1f2e;border-radius:2px;flex-shrink:0;display:inline-block;"></span>Главные улицы</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#141418;border-radius:2px;flex-shrink:0;display:inline-block;"></span>Кварталы</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#0d1a0d;border-radius:2px;flex-shrink:0;display:inline-block;"></span>Парки / зоны</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:#f4f4f5;margin-bottom:8px;">Маркеры</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#22c55e;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Точка A — подача</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#7c3aed;border-radius:2px;flex-shrink:0;display:inline-block;"></span>Точка Б — назначение</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:12px;height:12px;background:#7c3aed;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Позиция водителя</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:#f4f4f5;margin-bottom:8px;">Линии маршрута</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:24px;height:3px;background:#7c3aed;flex-shrink:0;display:inline-block;border-radius:2px;"></span>Полный маршрут A→Б</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:24px;height:2px;background:#22c55e;flex-shrink:0;display:inline-block;border-radius:2px;"></span>Подача к пассажиру</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#a1a1aa;"><span style="width:24px;height:2px;background:#c4b5fd;flex-shrink:0;display:inline-block;border-radius:2px;border-style:dashed;"></span>Анимация движения</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  EasyGo UX Design Directions · <span>Sally</span> · 2026-04-22
+</div>
+
+<script>
+function showDir(n, btn) {
+  document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('dir-' + n).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

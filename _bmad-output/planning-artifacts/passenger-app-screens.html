@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyGo — Пассажирское приложение</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #080808;
+    color: #f4f4f5;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #0d0d0dcc;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1f1f1f;
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 0;
+    flex-wrap: wrap;
+  }
+  .nav-logo {
+    font-size: 15px; font-weight: 700;
+    color: #f4f4f5; padding: 16px 24px 16px 0;
+    border-right: 1px solid #1f1f1f;
+    margin-right: 24px;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .nav-logo span { color: #7c3aed; }
+  .nav-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav-tab {
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: #71717a;
+    border: none; background: transparent; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .nav-tab:hover { color: #a1a1aa; background: #141414; }
+  .nav-tab.active { color: #f4f4f5; background: #1c1c1c; }
+  .nav-badge {
+    margin-left: 6px; font-size: 11px; background: #7c3aed22;
+    color: #7c3aed; padding: 2px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 64px 24px 48px;
+    max-width: 640px; margin: 0 auto;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #7c3aed; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 36px; font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .hero p { font-size: 15px; color: #71717a; line-height: 1.6; }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    padding: 0 24px 80px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .section.active { display: block; }
+
+  .section-header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #7c3aed; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .section-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .section-desc { font-size: 14px; color: #71717a; max-width: 560px; line-height: 1.6; }
+
+  /* SCREENS GRID */
+  .screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .screens { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .screens { grid-template-columns: 1fr; } }
+  .screens-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  @media (max-width: 1100px) { .screens-4 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .screens-4 { grid-template-columns: 1fr; } }
+
+  .screen-wrap { display: flex; flex-direction: column; gap: 12px; }
+  .screen-label { font-size: 12px; color: #71717a; font-weight: 500; }
+  .screen-label strong { color: #a1a1aa; }
+
+  /* PHONE FRAME */
+  .phone {
+    background: #0d0d0d;
+    border: 1px solid #1f1f1f;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 9/19;
+    position: relative;
+  }
+  .phone-notch {
+    width: 80px; height: 6px; background: #1a1a1a;
+    border-radius: 3px; margin: 12px auto 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #22c55e; }
+    50% { opacity: 0.5; box-shadow: 0 0 2px #22c55e; }
+  }
+  @keyframes pulse-violet {
+    0%, 100% { box-shadow: 0 0 8px #7c3aed66; }
+    50% { box-shadow: 0 0 16px #7c3aedaa; }
+  }
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ══════════════════════════════════════════
+     SHARED PHONE INNER STYLES
+     ══════════════════════════════════════════ */
+  .p-screen {
+    height: 100%; display: flex; flex-direction: column;
+    background: #0a0a0a; font-family: 'Inter', sans-serif;
+    font-size: 11px;
+  }
+  .p-header {
+    padding: 12px 14px 8px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .p-logo { font-size: 13px; font-weight: 700; letter-spacing: -0.02em; }
+  .p-logo span { color: #7c3aed; }
+  .p-avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: white;
+  }
+  .p-back {
+    font-size: 11px; color: #7c3aed; display: flex; align-items: center; gap: 4px;
+  }
+  .p-nav {
+    display: flex; border-top: 1px solid #141414;
+    padding: 8px 0 10px; margin-top: auto;
+    flex-shrink: 0;
+  }
+  .p-nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px; cursor: pointer;
+  }
+  .p-nav-icon { font-size: 13px; }
+  .p-nav-text { font-size: 7px; color: #52525b; }
+  .p-nav-item.active .p-nav-text { color: #7c3aed; }
+  .p-nav-item.active .p-nav-icon { filter: drop-shadow(0 0 3px #7c3aed88); }
+
+  /* Cards */
+  .p-card {
+    background: #141414; border: 1px solid #1f1f1f;
+    border-radius: 12px; padding: 10px 12px;
+  }
+  .p-card.green { border-color: #22c55e44; }
+  .p-card.violet { border-color: #7c3aed55; animation: pulse-violet 2.5s infinite; }
+
+  /* Buttons */
+  .p-btn {
+    width: 100%; border: none; border-radius: 12px;
+    padding: 10px; font-size: 11px; font-weight: 600;
+    cursor: pointer; text-align: center; letter-spacing: -0.01em;
+    font-family: 'Inter', sans-serif;
+  }
+  .p-btn.primary { background: #7c3aed; color: white; }
+  .p-btn.secondary { background: #141414; color: #a1a1aa; border: 1px solid #1f1f1f; }
+  .p-btn.success { background: #22c55e18; color: #22c55e; border: 1px solid #22c55e44; }
+
+  /* Dot */
+  .p-dot-green {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #22c55e; flex-shrink: 0;
+    animation: pulse-green 2s infinite;
+  }
+  .p-dot-grey {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #52525b; flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════════════
+     TAB 1: ЗАКАЗ — Главный + Цена
+     ══════════════════════════════════════════ */
+
+  /* Screen: Главный / Заказ */
+  .home-body { flex: 1; padding: 0 12px; overflow: hidden; display: flex; flex-direction: column; gap: 8px; }
+  .home-input {
+    background: #141414; border: 1px solid #27272a;
+    border-radius: 10px; padding: 9px 12px;
+    display: flex; align-items: center; gap: 8px;
+    color: #52525b; font-size: 10px;
+  }
+  .price-badge-full {
+    background: #22c55e0d; border: 1px solid #22c55e33;
+    border-radius: 10px; padding: 8px 12px;
+  }
+  .price-badge-full .price-row {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .price-main { font-size: 20px; font-weight: 700; color: #f4f4f5; letter-spacing: -0.03em; }
+  .price-main .rub { font-size: 13px; font-weight: 500; color: #a1a1aa; }
+  .price-fixed-badge {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 8px; color: #22c55e; margin-top: 4px;
+  }
+  .compare-block {
+    background: #141414; border: 1px solid #1f1f1f;
+    border-radius: 10px; padding: 8px 12px;
+  }
+  .compare-row { display: flex; align-items: center; justify-content: space-between; }
+  .compare-label { font-size: 8px; color: #52525b; margin-bottom: 4px; }
+  .compare-yandex { font-size: 10px; color: #52525b; text-decoration: line-through; }
+  .compare-easy { font-size: 11px; font-weight: 700; color: #22c55e; }
+  .compare-save { font-size: 8px; color: #22c55e; background: #22c55e15; padding: 2px 6px; border-radius: 4px; }
+  .fav-driver-btn {
+    background: #141414; border: 1px solid #27272a;
+    border-radius: 12px; padding: 9px 12px;
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+  }
+  .fav-driver-btn .name { font-size: 10px; font-weight: 600; color: #e4e4e7; flex: 1; }
+  .fav-driver-btn .sub { font-size: 8px; color: #52525b; }
+
+  /* Screen: Поездка в процессе */
+  .trip-map {
+    flex: 1; background: #0f1117;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .trip-map-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(#1a1a1a 1px, transparent 1px),
+      linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+    background-size: 24px 24px; opacity: 0.4;
+  }
+  .trip-car-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #7c3aed; z-index: 2;
+    box-shadow: 0 0 12px #7c3aed88;
+    animation: pulse-violet 1.5s infinite;
+  }
+  .trip-route-line {
+    position: absolute; top: 50%; left: 30%; right: 20%;
+    height: 2px; background: linear-gradient(90deg, #7c3aed66, #7c3aed);
+    border-radius: 1px; z-index: 1;
+  }
+  .trip-dest-dot {
+    position: absolute; top: 50%; right: 20%;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e; margin-top: -4px;
+    box-shadow: 0 0 8px #22c55e88; z-index: 2;
+  }
+  .trip-sheet {
+    background: #141414; border-top: 1px solid #1f1f1f;
+    border-radius: 16px 16px 0 0; padding: 12px 14px;
+    flex-shrink: 0;
+  }
+  .trip-driver-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .trip-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed55, #6d28d955);
+    border: 1px solid #7c3aed44;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0;
+  }
+  .trip-name { font-size: 11px; font-weight: 600; color: #e4e4e7; }
+  .trip-sub { font-size: 8px; color: #52525b; margin-top: 1px; }
+  .trip-eta { font-size: 11px; font-weight: 700; color: #7c3aed; white-space: nowrap; }
+  .trip-divider { height: 1px; background: #1f1f1f; margin: 8px 0; }
+  .trip-price-row { display: flex; align-items: center; justify-content: space-between; }
+  .trip-price-label { font-size: 9px; color: #52525b; }
+  .trip-price-val { font-size: 13px; font-weight: 700; color: #f4f4f5; }
+  .trip-fixed-badge {
+    display: flex; align-items: center; gap: 3px;
+    font-size: 8px; color: #52525b; margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     TAB 2: ИТОГ ПОЕЗДКИ
+     ══════════════════════════════════════════ */
+  .post-body { flex: 1; padding: 0 12px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; }
+  .post-saving {
+    text-align: center; padding: 12px;
+    background: #22c55e0d; border: 1px solid #22c55e33; border-radius: 12px;
+    animation: count-up 0.4s ease;
+  }
+  .post-saving-label { font-size: 8px; color: #22c55e; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .post-saving-amount { font-size: 26px; font-weight: 700; color: #22c55e; letter-spacing: -0.03em; line-height: 1; }
+  .post-saving-sub { font-size: 8px; color: #52525b; margin-top: 3px; }
+  .post-money-flow { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 10px 12px; }
+  .post-mf-title { font-size: 8px; color: #52525b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .post-mf-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+  .post-mf-label { font-size: 9px; color: #a1a1aa; display: flex; align-items: center; gap: 5px; }
+  .post-mf-val { font-size: 11px; font-weight: 600; }
+  .post-mf-val.green { color: #22c55e; }
+  .post-mf-val.muted { color: #52525b; }
+  .post-mf-divider { height: 1px; background: #1f1f1f; margin: 4px 0; }
+  .post-mf-narrative { font-size: 8px; color: #71717a; margin-top: 6px; line-height: 1.5; }
+  .post-mf-link { font-size: 8px; color: #7c3aed; margin-top: 3px; cursor: pointer; }
+  .post-driver-nudge { background: #141414; border: 1px solid #7c3aed33; border-radius: 12px; padding: 9px 12px; }
+  .post-driver-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .post-driver-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed44, #6d28d944);
+    border: 1px solid #7c3aed44;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; flex-shrink: 0;
+  }
+  .post-driver-name { font-size: 10px; font-weight: 600; color: #e4e4e7; }
+  .post-driver-meta { font-size: 8px; color: #52525b; }
+  .post-nudge-text { font-size: 9px; color: #a1a1aa; line-height: 1.4; margin-bottom: 7px; }
+  .post-counter { font-size: 8px; color: #52525b; margin-bottom: 7px; }
+  .post-counter-bar {
+    height: 3px; background: #1f1f1f; border-radius: 2px; margin-top: 3px; overflow: hidden;
+  }
+  .post-counter-fill {
+    height: 100%; background: #7c3aed; border-radius: 2px; width: 10%;
+  }
+
+  /* ══════════════════════════════════════════
+     TAB 3: МОИ ВОДИТЕЛИ
+     ══════════════════════════════════════════ */
+  .drivers-body { flex: 1; padding: 0 12px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; }
+  .drivers-section-label { font-size: 8px; color: #52525b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .driver-card {
+    background: #141414; border-radius: 12px; padding: 9px 12px;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .driver-card.online { border: 1px solid #22c55e33; }
+  .driver-card.offline { border: 1px solid #1f1f1f; }
+  .driver-card-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed44, #6d28d944);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0; position: relative;
+  }
+  .driver-card-avatar .status-dot {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #141414;
+  }
+  .driver-card-avatar .status-dot.online { background: #22c55e; animation: pulse-green 2s infinite; }
+  .driver-card-avatar .status-dot.offline { background: #52525b; }
+  .driver-card-info { flex: 1; }
+  .driver-card-name { font-size: 10px; font-weight: 600; color: #e4e4e7; margin-bottom: 2px; }
+  .driver-card-meta { font-size: 8px; color: #52525b; }
+  .driver-card-actions { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+  .mini-btn {
+    border: none; border-radius: 7px; padding: 4px 8px;
+    font-size: 8px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+  }
+  .mini-btn.primary { background: #7c3aed; color: white; }
+  .mini-btn.ghost { background: #1f1f1f; color: #71717a; }
+
+  /* Screen: Профиль водителя */
+  .profile-photo {
+    flex-shrink: 0; height: 80px; background: linear-gradient(160deg, #141414, #0d0d0d);
+    border-bottom: 1px solid #1f1f1f; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .profile-photo-circle {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed66, #6d28d966);
+    border: 2px solid #7c3aed44;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .profile-online-badge {
+    position: absolute; bottom: 12px; right: 12px;
+    display: flex; align-items: center; gap: 4px;
+    background: #22c55e15; border: 1px solid #22c55e44;
+    border-radius: 20px; padding: 3px 8px;
+    font-size: 8px; color: #22c55e;
+  }
+  .profile-body { flex: 1; padding: 0 12px; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
+  .profile-name-row { padding-top: 8px; }
+  .profile-name { font-size: 15px; font-weight: 700; color: #f4f4f5; letter-spacing: -0.02em; }
+  .profile-stats { display: flex; gap: 12px; margin-top: 3px; }
+  .profile-stat { font-size: 8px; color: #71717a; }
+  .profile-stat strong { color: #a1a1aa; }
+  .profile-car-row {
+    background: #141414; border: 1px solid #1f1f1f; border-radius: 10px;
+    padding: 7px 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .profile-car-icon { font-size: 13px; }
+  .profile-car-text { font-size: 9px; color: #a1a1aa; }
+  .profile-car-plate {
+    margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #7c3aed; background: #7c3aed15;
+    padding: 2px 6px; border-radius: 4px; border: 1px solid #7c3aed33;
+  }
+  .profile-style { background: #141414; border: 1px solid #1f1f1f; border-radius: 10px; padding: 7px 10px; }
+  .profile-style-title { font-size: 8px; color: #52525b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+  .profile-style-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 8px; color: #a1a1aa; background: #1f1f1f;
+    border-radius: 4px; padding: 2px 6px; margin: 1px 2px 1px 0;
+  }
+  .profile-earns-block {
+    background: #7c3aed0d; border: 1px solid #7c3aed33;
+    border-radius: 10px; padding: 7px 10px;
+  }
+  .profile-earns-text { font-size: 9px; color: #a1a1aa; line-height: 1.5; }
+  .profile-earns-text strong { color: #7c3aed; }
+  .profile-btns { display: flex; flex-direction: column; gap: 5px; padding-bottom: 10px; padding: 0 12px 10px; flex-shrink: 0; }
+
+  /* ══════════════════════════════════════════
+     TAB 4: ОНБОРДИНГ
+     ══════════════════════════════════════════ */
+  .ob-screen {
+    height: 100%; display: flex; flex-direction: column;
+    background: #0a0a0a; font-family: 'Inter', sans-serif;
+    font-size: 11px;
+  }
+  .ob-dots { display: flex; gap: 5px; justify-content: center; padding-top: 14px; }
+  .ob-dot { width: 16px; height: 3px; border-radius: 2px; background: #1f1f1f; }
+  .ob-dot.active { background: #7c3aed; }
+  /* Slide 1 */
+  .ob1-body {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 16px 16px 0;
+  }
+  .ob1-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: #7c3aed15; border: 1px solid #7c3aed33;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+    box-shadow: 0 0 20px #7c3aed22;
+  }
+  .ob1-headline { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px; }
+  .ob1-headline em { color: #7c3aed; font-style: normal; }
+  .ob1-sub { font-size: 11px; color: #71717a; line-height: 1.6; }
+  /* Slide 2 */
+  .ob2-body { flex: 1; padding: 12px 12px 0; display: flex; flex-direction: column; gap: 6px; }
+  .ob2-title { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .ob2-table { background: #141414; border: 1px solid #1f1f1f; border-radius: 10px; overflow: hidden; }
+  .ob2-row { display: flex; border-bottom: 1px solid #1f1f1f; }
+  .ob2-row:last-child { border-bottom: none; }
+  .ob2-cell {
+    flex: 1; padding: 6px 8px; font-size: 9px;
+    border-right: 1px solid #1f1f1f; text-align: center;
+  }
+  .ob2-cell:last-child { border-right: none; }
+  .ob2-cell.head { font-weight: 600; color: #71717a; background: #0d0d0d; font-size: 8px; }
+  .ob2-cell.easygoo { color: #22c55e; font-weight: 600; }
+  .ob2-cell.yandex { color: #71717a; text-decoration: line-through; }
+  .ob2-cell.label { color: #a1a1aa; text-align: left; font-weight: 500; }
+  /* Slide 3 */
+  .ob3-body { flex: 1; padding: 12px 12px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .ob3-badge {
+    background: #22c55e10; border: 1px solid #22c55e44;
+    border-radius: 10px; padding: 10px 16px; text-align: center; width: 100%;
+  }
+  .ob3-badge-label { font-size: 8px; color: #22c55e; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .ob3-badge-val { font-size: 22px; font-weight: 700; color: #22c55e; letter-spacing: -0.03em; }
+  .ob3-badge-sub { font-size: 8px; color: #52525b; margin-top: 2px; }
+  .ob3-counter-label { font-size: 9px; color: #52525b; text-align: center; }
+  .ob3-counter-bar { height: 4px; background: #1f1f1f; border-radius: 2px; width: 100%; overflow: hidden; }
+  .ob3-counter-fill { height: 100%; background: #22c55e; border-radius: 2px; width: 0%; }
+  .ob3-sub { font-size: 9px; color: #71717a; text-align: center; line-height: 1.5; }
+
+  /* OB footer */
+  .ob-footer { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+
+  /* ── ANCHOR LEGEND ── */
+  .legend {
+    margin-top: 48px; display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    background: #141414; border: 1px solid #1f1f1f;
+    border-radius: 8px; padding: 8px 14px;
+    font-size: 12px; color: #71717a;
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Easy<span>Go</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="show('order')">
+      Заказ <span class="nav-badge">1</span>
+    </button>
+    <button class="nav-tab" onclick="show('posttrip')">
+      Итог поездки <span class="nav-badge">2</span>
+    </button>
+    <button class="nav-tab" onclick="show('drivers')">
+      Мои водители <span class="nav-badge">3</span>
+    </button>
+    <button class="nav-tab" onclick="show('onboarding')">
+      Онбординг <span class="nav-badge">4</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     TAB 1: ЗАКАЗ
+     ══════════════════════════════════════ -->
+<div class="section active" id="section-order">
+  <div class="hero" style="padding-bottom: 0;">
+    <div class="hero-label">Якорь 1 — Рациональный</div>
+    <h1>Предсказуемая цена</h1>
+    <p>Фиксированная цена + сравнение с Яндексом. Пассажир видит выгоду до того, как нажал "Заказать".</p>
+  </div>
+
+  <div class="section" style="display:block; padding-top:0;">
+    <div class="screens" style="margin-top: 40px;">
+
+      <!-- Screen 1: Главный без избранного -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Главный экран</strong> — нет избранного водителя</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header">
+              <div class="p-logo">Easy<span>Go</span></div>
+              <div class="p-avatar">А</div>
+            </div>
+            <div class="home-body">
+              <div class="home-input">
+                <span>📍</span>
+                <span style="color:#52525b">Куда едем?</span>
+              </div>
+              <!-- Price badge + compare -->
+              <div class="price-badge-full">
+                <div class="price-row">
+                  <div>
+                    <div style="font-size:8px;color:#52525b;margin-bottom:2px;">EASYGO</div>
+                    <div class="price-main">280 <span class="rub">₽</span></div>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-size:8px;color:#52525b;">~12 мин</div>
+                    <div style="font-size:8px;color:#52525b;margin-top:2px;">Toyota Camry</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Compare block -->
+              <div class="compare-block">
+                <div class="compare-label">СРАВНЕНИЕ</div>
+                <div class="compare-row">
+                  <div>
+                    <span style="font-size:8px;color:#52525b;">Яндекс: </span>
+                    <span class="compare-yandex">350 ₽</span>
+                    <span style="margin-left:4px;" class="compare-easy">280 ₽</span>
+                  </div>
+                  <div class="compare-save">−20% · 70 ₽</div>
+                </div>
+              </div>
+              <div style="margin-top:2px;">
+                <button class="p-btn primary">Заказать за 280 ₽</button>
+              </div>
+            </div>
+            <div class="p-nav">
+              <div class="p-nav-item active">
+                <div class="p-nav-icon">◈</div>
+                <div class="p-nav-text">Главная</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">◉</div>
+                <div class="p-nav-text">Водители</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">○</div>
+                <div class="p-nav-text">История</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">◎</div>
+                <div class="p-nav-text">Профиль</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Главный с Избранным онлайн -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Главный экран</strong> — избранный водитель онлайн</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header">
+              <div class="p-logo">Easy<span>Go</span></div>
+              <div class="p-avatar">А</div>
+            </div>
+            <div class="home-body">
+              <div class="home-input">
+                <span>📍</span>
+                <span style="color:#52525b">Куда едем?</span>
+              </div>
+              <div class="price-badge-full">
+                <div class="price-row">
+                  <div>
+                    <div style="font-size:8px;color:#52525b;margin-bottom:2px;">EASYGO</div>
+                    <div class="price-main">280 <span class="rub">₽</span></div>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-size:8px;color:#52525b;">~12 мин</div>
+                  </div>
+                </div>
+              </div>
+              <div class="compare-block">
+                <div class="compare-label">СРАВНЕНИЕ</div>
+                <div class="compare-row">
+                  <div>
+                    <span style="font-size:8px;color:#52525b;">Яндекс: </span>
+                    <span class="compare-yandex">350 ₽</span>
+                    <span style="margin-left:4px;" class="compare-easy">280 ₽</span>
+                  </div>
+                  <div class="compare-save">−20% · 70 ₽</div>
+                </div>
+              </div>
+              <div style="margin-top:2px; display:flex; flex-direction:column; gap:5px;">
+                <div class="fav-driver-btn p-card violet" style="padding:7px 10px;">
+                  <div class="p-dot-green"></div>
+                  <div style="flex:1">
+                    <div class="fav-driver-btn name" style="font-size:10px;font-weight:600;color:#e4e4e7;">Антон · Мой водитель</div>
+                    <div style="font-size:8px;color:#52525b;">свободен · ~8 мин</div>
+                  </div>
+                  <div style="font-size:8px;color:#7c3aed;">→</div>
+                </div>
+                <button class="p-btn secondary" style="font-size:9px;padding:7px;">Стандартный заказ</button>
+              </div>
+            </div>
+            <div class="p-nav">
+              <div class="p-nav-item active">
+                <div class="p-nav-icon">◈</div>
+                <div class="p-nav-text">Главная</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">◉</div>
+                <div class="p-nav-text">Водители</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">○</div>
+                <div class="p-nav-text">История</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">◎</div>
+                <div class="p-nav-text">Профиль</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Поездка в процессе -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Поездка в процессе</strong> — цена зафиксирована</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="trip-map">
+              <div class="trip-map-grid"></div>
+              <div class="trip-route-line"></div>
+              <div class="trip-dest-dot"></div>
+              <div class="trip-car-dot"></div>
+            </div>
+            <div class="trip-sheet">
+              <div class="trip-driver-row">
+                <div class="trip-avatar">👤</div>
+                <div style="flex:1;">
+                  <div class="trip-name">Антон Петров</div>
+                  <div class="trip-sub">Toyota Camry · А777ВВ77 · ★ 4.9</div>
+                </div>
+                <div class="trip-eta">4 мин</div>
+              </div>
+              <div class="trip-divider"></div>
+              <div class="trip-price-row">
+                <div>
+                  <div class="trip-price-label">СТОИМОСТЬ</div>
+                  <div class="trip-price-val">280 ₽</div>
+                  <div class="trip-fixed-badge">
+                    <span style="color:#52525b">✓</span>
+                    Цена зафиксирована
+                  </div>
+                </div>
+                <button class="mini-btn ghost" style="font-size:8px;">Связаться</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#22c55e;"></div>
+        PriceComparisonBadge — показывается при разнице ≥ 15%
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c3aed;animation:pulse-violet 2s infinite;"></div>
+        Избранный водитель — появляется если онлайн
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#52525b;"></div>
+        "Цена зафиксирована" — нейтральный, не отвлекает
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 2: ИТОГ ПОЕЗДКИ
+     ══════════════════════════════════════ -->
+<div class="section" id="section-posttrip">
+  <div class="hero" style="padding-bottom: 0;">
+    <div class="hero-label">Якори 1 + 2 + 3 — все три сходятся</div>
+    <h1>Итог поездки</h1>
+    <p>Главный конверсионный экран. Экономия → Куда пошли деньги → Приглашение сохранить водителя.</p>
+  </div>
+
+  <div class="section" style="display:block; padding-top:0;">
+    <div class="screens" style="margin-top:40px;">
+
+      <!-- Screen: После 1-й поездки -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>1-я поездка</strong> — предложение добавить</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header" style="padding-bottom:4px;">
+              <div style="font-size:11px;font-weight:600;color:#a1a1aa;">Поездка завершена</div>
+              <div style="font-size:8px;color:#52525b;">сегодня, 18:42</div>
+            </div>
+            <div class="post-body">
+              <div class="post-saving">
+                <div class="post-saving-label">Вы сэкономили сегодня</div>
+                <div class="post-saving-amount" style="animation: count-up 0.5s ease;">87 ₽</div>
+                <div class="post-saving-sub">по сравнению с Яндексом</div>
+              </div>
+              <div class="post-money-flow">
+                <div class="post-mf-title">Куда пошли ваши деньги</div>
+                <div class="post-mf-row">
+                  <div class="post-mf-label">👤 Антону</div>
+                  <div class="post-mf-val green">280 ₽</div>
+                </div>
+                <div class="post-mf-narrative">Автопредприниматель получил 100% оплаты. Без посредников.</div>
+              </div>
+              <div class="post-driver-nudge">
+                <div class="post-driver-row">
+                  <div class="post-driver-avatar">👤</div>
+                  <div>
+                    <div class="post-driver-name">Антон Петров</div>
+                    <div class="post-driver-meta">★ 4.9 · 1-я поездка вместе</div>
+                  </div>
+                </div>
+                <div class="post-nudge-text">Хотите ездить с Антоном снова?</div>
+                <button class="p-btn success" style="font-size:9px;padding:7px;">Добавить в избранные</button>
+              </div>
+            </div>
+            <div style="padding: 7px 12px 10px; flex-shrink:0;">
+              <button class="p-btn secondary" style="font-size:9px;padding:7px;">Оценить поездку</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen: После 3-й поездки — nudge сильнее -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>3-я поездка с Антоном</strong> — сильный nudge</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header" style="padding-bottom:4px;">
+              <div style="font-size:11px;font-weight:600;color:#a1a1aa;">Поездка завершена</div>
+              <div style="font-size:8px;color:#52525b;">сегодня, 19:15</div>
+            </div>
+            <div class="post-body">
+              <div class="post-saving">
+                <div class="post-saving-label">Всего сэкономлено с EasyGo</div>
+                <div class="post-saving-amount">261 ₽</div>
+                <div class="post-saving-sub">за 3 поездки</div>
+              </div>
+              <div class="post-money-flow">
+                <div class="post-mf-title">Куда пошли ваши деньги</div>
+                <div class="post-mf-row">
+                  <div class="post-mf-label">👤 Антону</div>
+                  <div class="post-mf-val green">340 ₽</div>
+                </div>
+                <div class="post-mf-narrative">Автопредприниматель получил 100% оплаты. Без посредников.</div>
+              </div>
+              <div class="post-driver-nudge" style="border-color:#7c3aed66;">
+                <div class="post-driver-row">
+                  <div class="post-driver-avatar">👤</div>
+                  <div>
+                    <div class="post-driver-name">Антон Петров</div>
+                    <div class="post-driver-meta">★ 4.9 · уже 3 поездки вместе</div>
+                  </div>
+                </div>
+                <div class="post-nudge-text" style="color:#c4b5fd;">Похоже, вы нашли своего водителя. Сохранить?</div>
+                <button class="p-btn primary" style="font-size:9px;padding:7px;background:#7c3aed;">Сохранить как Мой водитель</button>
+              </div>
+            </div>
+            <div style="padding: 7px 12px 10px; flex-shrink:0;">
+              <button class="p-btn secondary" style="font-size:9px;padding:7px;">Оценить поездку</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen: 1-я поездка по скидке — счётчик -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Скидка активна</strong> — счётчик прогресса</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header" style="padding-bottom:4px;">
+              <div style="font-size:11px;font-weight:600;color:#a1a1aa;">Поездка завершена</div>
+              <div style="font-size:8px;color:#52525b;">сегодня, 14:07</div>
+            </div>
+            <div class="post-body">
+              <!-- Discount progress -->
+              <div class="p-card green" style="padding:10px 12px;">
+                <div style="font-size:8px;color:#22c55e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Скидка 30% активна</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <div style="font-size:10px;color:#a1a1aa;">Использовано поездок</div>
+                  <div style="font-size:11px;font-weight:700;color:#22c55e;">1 / 10</div>
+                </div>
+                <div style="height:4px;background:#1f1f1f;border-radius:2px;overflow:hidden;">
+                  <div style="height:100%;width:10%;background:#22c55e;border-radius:2px;"></div>
+                </div>
+                <div style="font-size:8px;color:#52525b;margin-top:4px;">ещё 9 поездок со скидкой</div>
+              </div>
+              <div class="post-saving" style="background:#22c55e08;">
+                <div class="post-saving-label">Сэкономлено сегодня</div>
+                <div class="post-saving-amount" style="font-size:22px;">87 ₽</div>
+                <div class="post-saving-sub">скидка 30% + без Яндекса</div>
+              </div>
+              <div class="post-money-flow">
+                <div class="post-mf-title">Куда пошли ваши деньги</div>
+                <div class="post-mf-row">
+                  <div class="post-mf-label">👤 Водителю</div>
+                  <div class="post-mf-val green">196 ₽</div>
+                </div>
+                <div class="post-mf-narrative">Автопредприниматель получил 100% оплаты. Без посредников.</div>
+              </div>
+              <button class="p-btn primary">Заказать следующую поездку</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#22c55e;"></div>
+        MoneyFlowScreen — 340 ₽ водителю. Автопредприниматель получает 100%
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c3aed;animation:pulse-violet 2s infinite;"></div>
+        Nudge "Мой водитель" — усиливается с каждой совместной поездкой
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#22c55e;"></div>
+        Счётчик 1/10 — визуализация прогресса скидки
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 3: МОИ ВОДИТЕЛИ
+     ══════════════════════════════════════ -->
+<div class="section" id="section-drivers">
+  <div class="hero" style="padding-bottom: 0;">
+    <div class="hero-label">Якорь 2 — Эмоциональный</div>
+    <h1>Любимый водитель</h1>
+    <p>Список избранных с онлайн-статусом. Профиль водителя до посадки. Прямое бронирование.</p>
+  </div>
+
+  <div class="section" style="display:block; padding-top:0;">
+    <div class="screens-4" style="margin-top:40px;">
+
+      <!-- Screen: Мои водители — список -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Мои водители</strong> — список</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header">
+              <div class="p-logo">Easy<span>Go</span></div>
+              <div style="font-size:9px;color:#52525b;">2 водителя</div>
+            </div>
+            <div class="drivers-body">
+              <div class="drivers-section-label">Сейчас онлайн</div>
+              <div class="driver-card online">
+                <div class="driver-card-avatar">
+                  👤
+                  <div class="status-dot online"></div>
+                </div>
+                <div class="driver-card-info">
+                  <div class="driver-card-name">Антон Петров</div>
+                  <div class="driver-card-meta">★ 4.9 · Toyota Camry · 3 поездки с вами</div>
+                </div>
+                <div class="driver-card-actions">
+                  <button class="mini-btn primary">Запросить</button>
+                  <div style="font-size:7px;color:#52525b;text-align:right;">~8 мин</div>
+                </div>
+              </div>
+              <div style="height:8px;"></div>
+              <div class="drivers-section-label">Офлайн</div>
+              <div class="driver-card offline">
+                <div class="driver-card-avatar" style="filter:grayscale(.6);">
+                  👤
+                  <div class="status-dot offline"></div>
+                </div>
+                <div class="driver-card-info">
+                  <div class="driver-card-name" style="color:#71717a;">Марат Сейткали</div>
+                  <div class="driver-card-meta">★ 4.8 · Kia Rio · 1 поездка</div>
+                </div>
+                <div class="driver-card-actions">
+                  <button class="mini-btn ghost">Уведомить</button>
+                </div>
+              </div>
+              <div style="flex:1;"></div>
+              <div style="font-size:9px;color:#52525b;text-align:center;padding-bottom:4px;line-height:1.5;">
+                Водители добавляются<br>после поездок
+              </div>
+            </div>
+            <div class="p-nav">
+              <div class="p-nav-item">
+                <div class="p-nav-icon">◈</div>
+                <div class="p-nav-text">Главная</div>
+              </div>
+              <div class="p-nav-item active">
+                <div class="p-nav-icon">◉</div>
+                <div class="p-nav-text">Водители</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">○</div>
+                <div class="p-nav-text">История</div>
+              </div>
+              <div class="p-nav-item">
+                <div class="p-nav-icon">◎</div>
+                <div class="p-nav-text">Профиль</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen: Профиль водителя -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Профиль водителя</strong> — до посадки</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header">
+              <div class="p-back">← Назад</div>
+              <div style="font-size:8px;color:#52525b;">профиль</div>
+            </div>
+            <div class="profile-photo">
+              <div class="profile-photo-circle">👤</div>
+              <div class="profile-online-badge">
+                <div class="p-dot-green"></div>
+                онлайн
+              </div>
+            </div>
+            <div class="profile-body">
+              <div class="profile-name-row">
+                <div class="profile-name">Антон Петров</div>
+                <div class="profile-stats">
+                  <div class="profile-stat">★ <strong>4.9</strong></div>
+                  <div class="profile-stat"><strong>847</strong> поездок</div>
+                  <div class="profile-stat"><strong>3</strong> с вами</div>
+                </div>
+              </div>
+              <div class="profile-car-row">
+                <div class="profile-car-icon">🚗</div>
+                <div class="profile-car-text">Toyota Camry 2021</div>
+                <div class="profile-car-plate">А777ВВ77</div>
+              </div>
+              <div class="profile-style">
+                <div class="profile-style-title">Стиль езды</div>
+                <span class="profile-style-tag">🎵 Музыка ок</span>
+                <span class="profile-style-tag">🚭 Некурящий</span>
+                <span class="profile-style-tag">🤫 Спокойно</span>
+              </div>
+              <div class="profile-earns-block">
+                <div class="profile-earns-text">
+                  <strong>Антон получает 100%</strong> от вашей поездки. Ни рубля посреднику.
+                </div>
+              </div>
+            </div>
+            <div class="profile-btns">
+              <button class="p-btn primary" style="font-size:9px;padding:8px;">Запросить Антона · тариф +25%</button>
+              <button class="p-btn secondary" style="font-size:9px;padding:7px;">Стандартный заказ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen: Запрос отправлен (ожидание) -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Прямой запрос</strong> — ожидание ответа</div>
+        <div class="phone">
+          <div class="p-screen">
+            <div class="phone-notch"></div>
+            <div class="p-header">
+              <div class="p-back">← Отмена</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:14px;">
+              <!-- Pulsing ring -->
+              <div style="position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;">
+                <div style="
+                  position:absolute;inset:0;border-radius:50%;
+                  border:2px solid #7c3aed44;
+                  animation:pulse-violet 1.5s infinite;
+                "></div>
+                <div style="
+                  position:absolute;inset:8px;border-radius:50%;
+                  border:2px solid #7c3aed88;
+                  animation:pulse-violet 1.5s infinite .3s;
+                "></div>
+                <div style="font-size:22px;">👤</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:13px;font-weight:700;color:#e4e4e7;letter-spacing:-.02em;margin-bottom:4px;">Запрос отправлен</div>
+                <div style="font-size:10px;color:#71717a;">Антон Петров</div>
+              </div>
+              <!-- Timer -->
+              <div style="width:100%;background:#141414;border:1px solid #1f1f1f;border-radius:10px;padding:10px 12px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <div style="font-size:9px;color:#52525b;">Ожидание ответа</div>
+                  <div style="font-size:11px;font-weight:700;color:#f59e0b;font-family:'JetBrains Mono',monospace;">0:47</div>
+                </div>
+                <div style="height:3px;background:#1f1f1f;border-radius:2px;overflow:hidden;">
+                  <div style="height:100%;width:78%;background:#f59e0b;border-radius:2px;"></div>
+                </div>
+              </div>
+              <div style="font-size:9px;color:#52525b;text-align:center;line-height:1.6;max-width:180px;">
+                Если Антон не ответит — предложим стандартный заказ
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen: Push-уведомление -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Push-уведомление</strong> — Антон онлайн</div>
+        <div class="phone">
+          <div class="p-screen" style="background:#000;">
+            <div class="phone-notch"></div>
+            <!-- Lock screen style -->
+            <div style="flex:1;display:flex;flex-direction:column;padding:16px 12px;gap:12px;">
+              <!-- Time -->
+              <div style="text-align:center;padding:20px 0;">
+                <div style="font-size:36px;font-weight:300;color:#f4f4f5;letter-spacing:-.03em;">18:47</div>
+                <div style="font-size:12px;color:#71717a;margin-top:2px;">Воскресенье, 27 апреля</div>
+              </div>
+              <!-- Push notification -->
+              <div style="
+                background:#1c1c1eee;
+                backdrop-filter:blur(20px);
+                border:1px solid #2c2c2e;
+                border-radius:14px;
+                padding:10px 12px;
+                animation:slide-up .4s ease;
+              ">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                  <div style="
+                    width:22px;height:22px;border-radius:6px;
+                    background:linear-gradient(135deg,#7c3aed,#6d28d9);
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:11px;font-weight:700;color:white;flex-shrink:0;
+                  ">E</div>
+                  <div style="font-size:9px;font-weight:600;color:#e4e4e7;">EasyGo</div>
+                  <div style="font-size:8px;color:#52525b;margin-left:auto;">сейчас</div>
+                </div>
+                <div style="font-size:11px;font-weight:600;color:#f4f4f5;margin-bottom:3px;">
+                  Антон снова онлайн 🟢
+                </div>
+                <div style="font-size:10px;color:#a1a1aa;line-height:1.5;">
+                  Антон свободен. Хотите заказать поездку?
+                </div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <button style="
+                    flex:1;background:#7c3aed;color:white;border:none;
+                    border-radius:8px;padding:6px;font-size:9px;font-weight:600;
+                    font-family:'Inter',sans-serif;cursor:pointer;
+                  ">Запросить</button>
+                  <button style="
+                    flex:1;background:#2c2c2e;color:#a1a1aa;border:none;
+                    border-radius:8px;padding:6px;font-size:9px;
+                    font-family:'Inter',sans-serif;cursor:pointer;
+                  ">Закрыть</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#22c55e;animation:pulse-green 2s infinite;"></div>
+        NodeStatus — пульсирует только онлайн-статус
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c3aed;animation:pulse-violet 1.5s infinite;"></div>
+        Таймер 60 сек — жёлтый цвет, не красный (нет тревоги)
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#71717a;"></div>
+        Офлайн-водитель — серый, кнопка "Уведомить когда онлайн"
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 4: ОНБОРДИНГ
+     ══════════════════════════════════════ -->
+<div class="section" id="section-onboarding">
+  <div class="hero" style="padding-bottom: 0;">
+    <div class="hero-label">Первый запуск</div>
+    <h1>Онбординг — 3 слайда</h1>
+    <p>Эмоциональный → Рациональный → Активация. Пассажир понимает ценность до первой поездки.</p>
+  </div>
+
+  <div class="section" style="display:block; padding-top:0;">
+    <div class="screens" style="margin-top:40px;">
+
+      <!-- Slide 1: Эмоциональный -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Слайд 1</strong> — Эмоциональный</div>
+        <div class="phone">
+          <div class="ob-screen">
+            <div class="phone-notch"></div>
+            <div class="ob-dots" style="justify-content:center;">
+              <div class="ob-dot active"></div>
+              <div class="ob-dot"></div>
+              <div class="ob-dot"></div>
+            </div>
+            <div class="ob1-body">
+              <div class="ob1-icon">🚗</div>
+              <div class="ob1-headline">
+                Водитель получает всё.<br>
+                Ты платишь <em>меньше.</em>
+              </div>
+              <div class="ob1-sub" style="margin-top:10px;">
+                Те же машины. Те же водители.<br>Дешевле — потому что без Яндекса.
+              </div>
+            </div>
+            <div class="ob-footer">
+              <button class="p-btn primary">Дальше</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Рациональный (таблица) -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Слайд 2</strong> — Рациональный</div>
+        <div class="phone">
+          <div class="ob-screen">
+            <div class="phone-notch"></div>
+            <div class="ob-dots">
+              <div class="ob-dot"></div>
+              <div class="ob-dot active"></div>
+              <div class="ob-dot"></div>
+            </div>
+            <div class="ob2-body">
+              <div class="ob2-title">EasyGo vs Яндекс</div>
+              <div class="ob2-table">
+                <div class="ob2-row">
+                  <div class="ob2-cell head" style="flex:1.2;text-align:left;"></div>
+                  <div class="ob2-cell head">EasyGo</div>
+                  <div class="ob2-cell head">Яндекс</div>
+                </div>
+                <div class="ob2-row">
+                  <div class="ob2-cell label" style="flex:1.2;">Цена</div>
+                  <div class="ob2-cell easygoo">Фикс.</div>
+                  <div class="ob2-cell yandex">Surge</div>
+                </div>
+                <div class="ob2-row">
+                  <div class="ob2-cell label" style="flex:1.2;">Водитель</div>
+                  <div class="ob2-cell easygoo">100%</div>
+                  <div class="ob2-cell yandex">~70%</div>
+                </div>
+                <div class="ob2-row">
+                  <div class="ob2-cell label" style="flex:1.2;">Финансы</div>
+                  <div class="ob2-cell easygoo">Открыты</div>
+                  <div class="ob2-cell yandex">Скрыты</div>
+                </div>
+              </div>
+              <!-- Emotional add-on -->
+              <div style="background:#7c3aed0d;border:1px solid #7c3aed33;border-radius:10px;padding:8px 10px;">
+                <div style="font-size:9px;color:#c4b5fd;line-height:1.5;">
+                  "Водитель зарабатывает больше —<br>ты платишь меньше. Без посредников."
+                </div>
+              </div>
+            </div>
+            <div class="ob-footer">
+              <button class="p-btn primary">Дальше</button>
+              <button class="p-btn secondary" style="font-size:9px;padding:7px;">Назад</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Активация скидки -->
+      <div class="screen-wrap">
+        <div class="screen-label"><strong>Слайд 3</strong> — Активация скидки</div>
+        <div class="phone">
+          <div class="ob-screen">
+            <div class="phone-notch"></div>
+            <div class="ob-dots">
+              <div class="ob-dot"></div>
+              <div class="ob-dot"></div>
+              <div class="ob-dot active"></div>
+            </div>
+            <div class="ob3-body">
+              <div class="ob3-badge">
+                <div class="ob3-badge-label">Скидка активирована</div>
+                <div class="ob3-badge-val">−30%</div>
+                <div class="ob3-badge-sub">на первые 10 поездок</div>
+              </div>
+              <div style="width:100%;">
+                <div class="ob3-counter-label">Поездок со скидкой: 0 / 10</div>
+                <div class="ob3-counter-bar" style="margin-top:5px;">
+                  <div class="ob3-counter-fill"></div>
+                </div>
+              </div>
+              <div class="ob3-sub">
+                Просто садитесь в машину.<br>Скидка применяется сама.
+              </div>
+              <div style="
+                background:#141414;border:1px solid #1f1f1f;
+                border-radius:10px;padding:8px 10px;width:100%;
+              ">
+                <div style="font-size:8px;color:#52525b;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Реферальный код водителя</div>
+                <div style="
+                  font-family:'JetBrains Mono',monospace;
+                  font-size:12px;color:#7c3aed;
+                  background:#7c3aed10;padding:6px 10px;border-radius:8px;
+                  border:1px solid #7c3aed33;
+                  box-shadow:0 0 10px #7c3aed18;
+                  display:flex;justify-content:space-between;align-items:center;
+                ">
+                  ANTON-X7K2
+                  <span style="font-size:8px;color:#7c3aed66;">✓ применён</span>
+                </div>
+              </div>
+            </div>
+            <div class="ob-footer">
+              <button class="p-btn primary">Сделать первую поездку</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c3aed;"></div>
+        Слайд 1 — эмоция: гордость + антагонист Яндекс
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#22c55e;"></div>
+        Слайд 2 — факты: таблица EasyGo зелёная, Яндекс зачёркнут
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#7c3aed;animation:pulse-violet 2s infinite;"></div>
+        Слайд 3 — AccessToken предзаполнен, скидка уже активна
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function show(tab) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('section-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
